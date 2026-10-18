@@ -29,6 +29,7 @@ jobs:
           gradle-version: '8.9'
 
       - name: Build APK
+        working-directory: MyDashboardWidget-v2-Source
         run: gradle --no-daemon assembleDebug
 
       - name: Upload APK
