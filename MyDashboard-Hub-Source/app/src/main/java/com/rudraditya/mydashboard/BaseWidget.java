@@ -84,4 +84,4 @@ abstract class BaseWidget extends AppWidgetProvider {
     v.setOnClickPendingIntent(viewId, p);
 }
     }
-}
+
