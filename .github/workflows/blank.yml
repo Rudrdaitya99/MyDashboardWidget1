@@ -1,5 +1,5 @@
 
-name: Build Android APK
+name: Build My Dashboard Hub APK
 
 on:
   workflow_dispatch:
@@ -29,12 +29,12 @@ jobs:
           gradle-version: '8.9'
 
       - name: Build APK
-        working-directory: MyDashboardWidget-v2-Source
+        working-directory: MyDashboard-Hub-Source
         run: gradle --no-daemon assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: MyDashboard-v2-debug-apk
-          path: MyDashboardWidget-v2-Source/app/build/outputs/apk/debug/*.apk
+          name: MyDashboard-Hub-debug-apk
+          path: MyDashboard-Hub-Source/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
