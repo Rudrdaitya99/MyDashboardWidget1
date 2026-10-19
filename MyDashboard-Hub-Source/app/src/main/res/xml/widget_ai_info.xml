@@ -1,5 +1,12 @@
+
+<?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-        android:minWidth="170dp" android:minHeight="40dp" android:initialLayout="@layout/widget_ai"
-        android:resizeMode="horizontal|vertical" android:updatePeriodMillis="1800000"
-        android:widgetCategory="home_screen" android:description="@string/desc_ai"
-        android:targetCellWidth="3" android:targetCellHeight="1"//>
+    android:minWidth="170dp"
+    android:minHeight="40dp"
+    android:targetCellWidth="3"
+    android:targetCellHeight="1"
+    android:initialLayout="@layout/widget_dashboard"
+    android:resizeMode="horizontal|vertical"
+    android:updatePeriodMillis="1800000"
+    android:widgetCategory="home_screen"
+    android:description="@string/desc_dashboard" />
