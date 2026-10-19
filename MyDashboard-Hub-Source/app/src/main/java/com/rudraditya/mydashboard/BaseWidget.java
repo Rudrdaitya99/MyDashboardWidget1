@@ -34,8 +34,11 @@ abstract class BaseWidget extends AppWidgetProvider {
             if (k.equals("dashboard") || k.equals("countdown")) v.setTextViewText(R.id.countdownText, countdown(p.getString("target", "")));
             if (k.equals("dashboard")) v.setTextViewText(R.id.weatherText, "Weather · coming in a later update");
             if (k.equals("dashboard") || k.equals("ai")) {
-                setLink(v, c, id, R.id.chatgptText, "https://chatgpt.com");
-                setLink(v, c, id, R.id.geminiText, "https://gemini.google.com");
+                setAppLink(v, c, id, R.id.chatgptText,
+                   "com.openai.chatgpt", "https://chatgpt.com");
+
+                setAppLink(v, c, id, R.id.geminiText,
+                  "com.google.android.apps.bard", "https://gemini.google.com");
             }
             m.updateAppWidget(id, v);
         }
@@ -63,9 +66,22 @@ abstract class BaseWidget extends AppWidgetProvider {
             return TimeUnit.MILLISECONDS.toDays(f.parse(b).getTime() - f.parse(a).getTime());
         } catch (Exception e) { return -1; }
     }
-    private void setLink(RemoteViews v, Context c, int id, int viewId, String url) {
-        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        PendingIntent p = PendingIntent.getActivity(c, id + viewId, i, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-        v.setOnClickPendingIntent(viewId, p);
+   private void setAppLink(RemoteViews v, Context c, int id,
+        int viewId, String packageName, String url) {
+
+    Intent i = c.getPackageManager()
+            .getLaunchIntentForPackage(packageName);
+
+    if (i == null) {
+        i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+    }
+
+    PendingIntent p = PendingIntent.getActivity(
+            c, id + viewId, i,
+            PendingIntent.FLAG_UPDATE_CURRENT
+                    | PendingIntent.FLAG_IMMUTABLE);
+
+    v.setOnClickPendingIntent(viewId, p);
+}
     }
 }
