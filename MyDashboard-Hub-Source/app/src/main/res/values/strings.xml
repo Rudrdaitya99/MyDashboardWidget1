@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">My Dashboard</string>
+    <string name="desc_dashboard">Glass all-in-one dashboard</string>
+    <string name="desc_clock">Clock and date widget</string>
+    <string name="desc_battery">Battery widget</string>
+    <string name="desc_age">Age in days widget</string>
+    <string name="desc_countdown">Countdown widget</string>
+    <string name="desc_ai">ChatGPT and Gemini shortcut folder</string>
+</resources>

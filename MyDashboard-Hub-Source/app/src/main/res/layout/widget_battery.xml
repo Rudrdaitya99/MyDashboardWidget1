@@ -1,0 +1,11 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent" android:layout_height="match_parent"
+        android:orientation="vertical" android:padding="14dp" android:background="@drawable/glass_card">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="BATTERY" android:textColor="#BDB2FF" android:textSize="10sp"
+            android:textStyle="bold" android:letterSpacing="0.1"/>
+        <TextView android:id="@+id/batteryText" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:text="Battery · --%" android:textColor="#FFFFFF"
+            android:textSize="25sp" android:layout_marginTop="5dp" android:background="@drawable/glass_button"
+            android:padding="5dp"/>
+    </LinearLayout>
