@@ -89,7 +89,7 @@ public class MainActivity extends Activity {
         addGallery("Dashboard Hub", "dashboard", DashboardWidget.class,
                 new String[]{"Quick Panel", "Snow Ridge", "Stats Grid"});
         addGallery("Clock & Date", "clock", ClockWidget.class,
-                new String[]{"Digital Clock", "Snow Ridge Digital", "Analog Clock"});
+                new String[]{"Digital Glass", "Analog Dial", "Hybrid Snow Ridge"});
         addGallery("Battery", "battery", BatteryWidget.class,
                 new String[]{"Minimal Battery", "Snow Ridge Battery", "Circular Meter"});
         addGallery("Age Counter", "age", AgeWidget.class,
@@ -258,8 +258,8 @@ public class MainActivity extends Activity {
             else if (style == 1) layout = large ? R.layout.widget_dashboard_snow : R.layout.widget_dashboard_compact_snow;
             else layout = large ? R.layout.widget_dashboard : R.layout.widget_dashboard_compact;
         } else if (key.equals("clock")) {
-            if (style == 2) layout = compact ? R.layout.widget_clock_analog_compact : R.layout.widget_clock_analog;
-            else if (style == 1) layout = compact ? R.layout.widget_clock_compact_snow : R.layout.widget_clock_snow;
+            if (style == 1) layout = compact ? R.layout.widget_clock_analog_compact : R.layout.widget_clock_analog;
+            else if (style == 2) layout = compact ? R.layout.widget_clock_hybrid_compact : R.layout.widget_clock_hybrid;
             else layout = compact ? R.layout.widget_clock_compact : R.layout.widget_clock;
         } else if (key.equals("battery")) {
             if (style == 2) layout = compact ? R.layout.widget_battery_ring_compact : R.layout.widget_battery_ring;
@@ -297,7 +297,7 @@ public class MainActivity extends Activity {
         setPreviewText(actual, R.id.chatgptText, "✳ ChatGPT");
         setPreviewText(actual, R.id.geminiText, "✦ Gemini");
 
-        if (style == 1) {
+        if (style == 1 || (key.equals("clock") && style == 2)) {
             ImageView mountain = actual.findViewById(R.id.mountainBackground);
             if (mountain != null) {
                 Bitmap photo = ThemeAssets.widgetPhoto(this);
