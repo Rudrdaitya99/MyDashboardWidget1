@@ -297,7 +297,7 @@ public class MainActivity extends Activity {
         setPreviewText(actual, R.id.chatgptText, "✳ ChatGPT");
         setPreviewText(actual, R.id.geminiText, "✦ Gemini");
 
-        if (style == 1 || (key.equals("clock") && style == 2)) {
+        if ((style == 1 && !key.equals("clock")) || (key.equals("clock") && style == 2)) {
             ImageView mountain = actual.findViewById(R.id.mountainBackground);
             if (mountain != null) {
                 Bitmap photo = ThemeAssets.widgetPhoto(this);
