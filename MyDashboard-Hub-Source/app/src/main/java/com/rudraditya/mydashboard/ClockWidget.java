@@ -10,7 +10,7 @@ public class ClockWidget extends BaseWidget {
         boolean mono = c.getSharedPreferences(MainActivity.PREFS, Context.MODE_PRIVATE).getInt("style_clock", 0) == 1;
         Bundle options = m.getAppWidgetOptions(id);
         int minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, 0);
-        if (mono) return minHeight < 110 ? R.layout.widget_clock_compact_mono : R.layout.widget_clock_mono;
+        if (mono) return minHeight < 110 ? R.layout.widget_clock_compact_snow : R.layout.widget_clock_snow;
         return minHeight < 110 ? R.layout.widget_clock_compact : R.layout.widget_clock;
     }
     @Override String kind() { return "clock"; }
