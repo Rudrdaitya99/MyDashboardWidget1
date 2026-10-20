@@ -7,8 +7,8 @@ public class BatteryWidget extends BaseWidget {
     @Override int layoutId(Context c, AppWidgetManager m, int id) {
         boolean mono = c.getSharedPreferences(MainActivity.PREFS, Context.MODE_PRIVATE).getInt("style_battery", 0) == 1;
         int height = m.getAppWidgetOptions(id).getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, 70);
-        if (height < 110) return mono ? R.layout.widget_battery_mono : R.layout.widget_battery_compact;
-        return mono ? R.layout.widget_battery_mono : R.layout.widget_battery;
+        if (height < 110) return mono ? R.layout.widget_battery_snow : R.layout.widget_battery_compact;
+        return mono ? R.layout.widget_battery_snow : R.layout.widget_battery;
     }
     @Override String kind() { return "battery"; }
 }
