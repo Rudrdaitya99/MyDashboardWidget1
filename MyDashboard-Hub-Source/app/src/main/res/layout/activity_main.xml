@@ -1,6 +1,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:fillViewport="true" android:background="#0A1020">
+    android:fillViewport="true" android:background="#080B12">
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
         android:orientation="vertical" android:padding="20dp">
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -12,56 +12,73 @@
                 <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:text="My Dashboard" android:textColor="#FFFFFF" android:textSize="25sp" android:textStyle="bold"/>
                 <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:text="Your world · one place" android:textColor="#BDB2FF" android:textSize="13sp"/>
+                    android:text="Glass widgets · one place" android:textColor="#BDB2FF" android:textSize="13sp"/>
             </LinearLayout>
         </LinearLayout>
+
         <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="YOUR WIDGETS" android:textColor="#BDB2FF" android:textSize="11sp"
-            android:textStyle="bold" android:layout_marginTop="26dp"/>
+            android:text="WIDGET LIBRARY" android:textColor="#BDB2FF" android:textSize="11sp"
+            android:textStyle="bold" android:layout_marginTop="24dp"/>
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:orientation="vertical" android:background="@drawable/glass_card"
-            android:padding="16dp" android:layout_marginTop="10dp">
+            android:orientation="vertical" android:background="@drawable/glass_card" android:padding="14dp" android:layout_marginTop="8dp">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Dashboard Hub" android:textColor="#FFFFFF" android:textSize="15sp"/>
+            <Switch android:id="@+id/enableDashboard" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Enable widget" android:textColor="#DDE0F0"/>
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#33FFFFFF"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="AI Folder" android:textColor="#FFFFFF" android:textSize="15sp" android:layout_marginTop="8dp"/>
+            <Switch android:id="@+id/enableAi" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Enable widget" android:textColor="#DDE0F0"/>
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#33FFFFFF"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Clock and Date" android:textColor="#FFFFFF" android:textSize="15sp" android:layout_marginTop="8dp"/>
+            <Switch android:id="@+id/enableClock" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Enable widget" android:textColor="#DDE0F0"/>
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#33FFFFFF"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Battery Level" android:textColor="#FFFFFF" android:textSize="15sp" android:layout_marginTop="8dp"/>
+            <Switch android:id="@+id/enableBattery" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Enable widget" android:textColor="#DDE0F0"/>
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#33FFFFFF"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Age Counter" android:textColor="#FFFFFF" android:textSize="15sp" android:layout_marginTop="8dp"/>
+            <Switch android:id="@+id/enableAge" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Enable widget" android:textColor="#DDE0F0"/>
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#33FFFFFF"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Countdown" android:textColor="#FFFFFF" android:textSize="15sp" android:layout_marginTop="8dp"/>
+            <Switch android:id="@+id/enableCountdown" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Enable widget" android:textColor="#DDE0F0"/>
             <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:text="All-in-One Dashboard" android:textColor="#FFFFFF" android:textSize="17sp" android:textStyle="bold"/>
+                android:text="Turning a widget off pauses its content; it does not remove its home-screen tile. Long-press a tile to remove it." android:textColor="#AEB4C8" android:textSize="12sp" android:layout_marginTop="8dp"/>
             <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:text="Clock · battery · age in days · countdown" android:textColor="#C7C9D8" android:textSize="13sp" android:layout_marginTop="5dp"/>
-            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:text="Add it: long-press an empty home-screen area → Widgets → My Dashboard." android:textColor="#BDB2FF" android:textSize="12sp" android:layout_marginTop="10dp"/>
+                android:text="To add a widget: long-press an empty home-screen area → Widgets → My Dashboard." android:textColor="#BDB2FF" android:textSize="12sp" android:layout_marginTop="6dp"/>
         </LinearLayout>
+
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="GLASS APPEARANCE" android:textColor="#BDB2FF" android:textSize="11sp"
+            android:textStyle="bold" android:layout_marginTop="22dp"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical" android:background="@drawable/glass_card" android:padding="14dp" android:layout_marginTop="8dp">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Accent colour" android:textColor="#FFFFFF" android:textSize="14sp"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginTop="8dp">
+                <TextView android:id="@+id/accentPurple" android:layout_width="0dp" android:layout_height="44dp" android:layout_weight="1" android:gravity="center" android:text="Purple" android:textColor="#FFFFFF" android:background="#8E82FF"/>
+                <TextView android:id="@+id/accentBlue" android:layout_width="0dp" android:layout_height="44dp" android:layout_weight="1" android:gravity="center" android:text="Blue" android:textColor="#FFFFFF" android:background="#478BFF" android:layout_marginStart="6dp"/>
+                <TextView android:id="@+id/accentTeal" android:layout_width="0dp" android:layout_height="44dp" android:layout_weight="1" android:gravity="center" android:text="Teal" android:textColor="#FFFFFF" android:background="#26B7A5" android:layout_marginStart="6dp"/>
+                <TextView android:id="@+id/accentPink" android:layout_width="0dp" android:layout_height="44dp" android:layout_weight="1" android:gravity="center" android:text="Pink" android:textColor="#FFFFFF" android:background="#E36AAE" android:layout_marginStart="6dp"/>
+            </LinearLayout>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Widget transparency" android:textColor="#FFFFFF" android:textSize="14sp" android:layout_marginTop="16dp"/>
+            <SeekBar android:id="@+id/opacitySeek" android:layout_width="match_parent" android:layout_height="wrap_content" android:max="40" android:progress="15"/>
+            <TextView android:id="@+id/opacityLabel" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Glass opacity: 85%" android:textColor="#BDB2FF" android:textSize="12sp"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="Appearance changes refresh your existing widgets." android:textColor="#AEB4C8" android:textSize="12sp" android:layout_marginTop="6dp"/>
+        </LinearLayout>
+
         <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
             android:text="PERSONAL SETTINGS" android:textColor="#BDB2FF" android:textSize="11sp"
             android:textStyle="bold" android:layout_marginTop="22dp"/>
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:orientation="vertical" android:background="@drawable/glass_card"
-            android:padding="16dp" android:layout_marginTop="10dp">
-            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:text="Birthday (YYYY-MM-DD)" android:textColor="#FFFFFF" android:textSize="13sp"/>
-            <EditText android:id="@+id/birthInput" android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:singleLine="true" android:hint="e.g. 2012-09-18" android:textColor="#FFFFFF"
-                android:textColorHint="#9298B4" android:backgroundTint="#AFA5FF"/>
-            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:text="Countdown target (YYYY-MM-DD)" android:textColor="#FFFFFF" android:textSize="13sp" android:layout_marginTop="12dp"/>
-            <EditText android:id="@+id/targetInput" android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:singleLine="true" android:hint="e.g. 2027-01-01" android:textColor="#FFFFFF"
-                android:textColorHint="#9298B4" android:backgroundTint="#AFA5FF"/>
-            <TextView android:id="@+id/saveButton" android:layout_width="match_parent" android:layout_height="48dp"
-                android:gravity="center" android:text="SAVE SETTINGS" android:textColor="#FFFFFF"
-                android:textStyle="bold" android:background="@drawable/glass_button" android:layout_marginTop="14dp"/>
-            <TextView android:id="@+id/statusText" android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:textColor="#BDB2FF" android:textSize="12sp" android:layout_marginTop="8dp"/>
+            android:orientation="vertical" android:background="@drawable/glass_card" android:padding="14dp" android:layout_marginTop="8dp">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Birthday (YYYY-MM-DD)" android:textColor="#FFFFFF" android:textSize="13sp"/>
+            <EditText android:id="@+id/birthInput" android:layout_width="match_parent" android:layout_height="wrap_content" android:singleLine="true" android:hint="e.g. 2012-09-18" android:textColor="#FFFFFF" android:textColorHint="#9298B4" android:backgroundTint="#AFA5FF"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Countdown target (YYYY-MM-DD)" android:textColor="#FFFFFF" android:textSize="13sp" android:layout_marginTop="12dp"/>
+            <EditText android:id="@+id/targetInput" android:layout_width="match_parent" android:layout_height="wrap_content" android:singleLine="true" android:hint="e.g. 2027-01-01" android:textColor="#FFFFFF" android:textColorHint="#9298B4" android:backgroundTint="#AFA5FF"/>
+            <TextView android:id="@+id/saveButton" android:layout_width="match_parent" android:layout_height="48dp" android:gravity="center" android:text="SAVE PERSONAL SETTINGS" android:textColor="#FFFFFF" android:textStyle="bold" android:background="@drawable/glass_button" android:layout_marginTop="14dp"/>
+            <TextView android:id="@+id/statusText" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="#BDB2FF" android:textSize="12sp" android:layout_marginTop="8dp"/>
         </LinearLayout>
-        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="AI FOLDER" android:textColor="#BDB2FF" android:textSize="11sp" android:textStyle="bold" android:layout_marginTop="22dp"/>
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:orientation="horizontal" android:background="@drawable/glass_card" android:padding="12dp" android:layout_marginTop="10dp">
-            <TextView android:id="@+id/chatgptButton" android:layout_width="0dp" android:layout_height="64dp"
-                android:layout_weight="1" android:gravity="center" android:text="✳\nChatGPT" android:textColor="#FFFFFF"
-                android:textSize="15sp" android:background="@drawable/glass_button" android:layout_marginEnd="6dp"/>
-            <TextView android:id="@+id/geminiButton" android:layout_width="0dp" android:layout_height="64dp"
-                android:layout_weight="1" android:gravity="center" android:text="✦\nGemini" android:textColor="#FFFFFF"
-                android:textSize="15sp" android:background="@drawable/glass_button" android:layout_marginStart="6dp"/>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="AI FOLDER" android:textColor="#BDB2FF" android:textSize="11sp" android:textStyle="bold" android:layout_marginTop="22dp"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:background="@drawable/glass_card" android:padding="12dp" android:layout_marginTop="8dp">
+            <TextView android:id="@+id/chatgptButton" android:layout_width="0dp" android:layout_height="64dp" android:layout_weight="1" android:gravity="center" android:text="✳\nChatGPT" android:textColor="#FFFFFF" android:textSize="15sp" android:background="@drawable/glass_button" android:layout_marginEnd="6dp"/>
+            <TextView android:id="@+id/geminiButton" android:layout_width="0dp" android:layout_height="64dp" android:layout_weight="1" android:gravity="center" android:text="✦\nGemini" android:textColor="#FFFFFF" android:textSize="15sp" android:background="@drawable/glass_button" android:layout_marginStart="6dp"/>
         </LinearLayout>
-        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="Shortcuts open the official websites. No API keys, notification access or accessibility permission needed." android:textColor="#9EA4BD" android:textSize="12sp" android:layout_marginTop="8dp"/>
     </LinearLayout>
 </ScrollView>
