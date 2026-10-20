@@ -1,0 +1,12 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widgetRoot" android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="horizontal" android:gravity="center_vertical" android:padding="10dp" android:background="@drawable/glass_card">
+    <FrameLayout android:layout_width="70dp" android:layout_height="70dp" android:background="@drawable/ring_outline">
+        <TextView android:id="@+id/countdownNumberText" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:text="42" android:textColor="#FFFFFF" android:textSize="22sp" android:textStyle="bold"/>
+    </FrameLayout>
+    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:paddingStart="12dp">
+        <TextView android:id="@+id/countdownLabelText" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="DAYS LEFT" android:textColor="#BDBDBD" android:textSize="9sp" android:textStyle="bold" android:letterSpacing="0.12"/>
+        <TextView android:id="@+id/countdownText" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" android:text="Countdown · 42 days left"/>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Make the moment count." android:textColor="#FFFFFF" android:textSize="14sp" android:layout_marginTop="4dp"/>
+    </LinearLayout>
+</LinearLayout>
