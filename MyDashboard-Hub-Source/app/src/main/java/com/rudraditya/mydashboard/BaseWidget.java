@@ -54,13 +54,20 @@ abstract class BaseWidget extends AppWidgetProvider {
             int accent = Color.WHITE;
             int transparency = p.getInt("transparency", 20);
             boolean whiteRidge = p.getInt("style_" + k, 0) == 1;
-            int background = whiteRidge ? R.drawable.glass_mountain_card
-                    : transparency >= 70 ? R.drawable.glass_card_80
-                    : transparency >= 50 ? R.drawable.glass_card_60
-                    : transparency >= 30 ? R.drawable.glass_card_40
-                    : transparency >= 10 ? R.drawable.glass_card_20
-                    : R.drawable.glass_card_0;
-            try { v.setInt(R.id.widgetRoot, "setBackgroundResource", background); } catch (Exception ignored) {}
+            if (whiteRidge) {
+                try {
+                    android.graphics.Bitmap mountain = ThemeAssets.widgetPhoto(c);
+                    if (mountain != null) v.setImageViewBitmap(R.id.mountainBackground, mountain);
+                    v.setInt(R.id.widgetRoot, "setBackgroundColor", 0x99060606);
+                } catch (Exception ignored) {}
+            } else {
+                int background = transparency >= 70 ? R.drawable.glass_card_80
+                        : transparency >= 50 ? R.drawable.glass_card_60
+                        : transparency >= 30 ? R.drawable.glass_card_40
+                        : transparency >= 10 ? R.drawable.glass_card_20
+                        : R.drawable.glass_card_0;
+                try { v.setInt(R.id.widgetRoot, "setBackgroundResource", background); } catch (Exception ignored) {}
+            }
             if (k.equals("dashboard") || k.equals("clock")) {
                 try { v.setTextColor(R.id.timeText, accent); } catch (Exception ignored) {}
             }
@@ -90,7 +97,7 @@ abstract class BaseWidget extends AppWidgetProvider {
         int width = options == null ? 170 : options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, 170);
         int height = options == null ? 70 : options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, 70);
         float scale = Math.max(width / 170f, height / 70f);
-        scale = Math.max(0.82f, Math.min(1.28f, scale));
+        scale = Math.max(0.72f, Math.min(1.60f, scale));
         int[] ids = {R.id.timeText, R.id.dateText, R.id.batteryText, R.id.weatherText,
                 R.id.ageText, R.id.countdownText, R.id.chatgptText, R.id.geminiText};
         float[] base = {30f, 12f, kind.equals("battery") ? 20f : 13f, 12f, kind.equals("age") ? 17f : 12f, kind.equals("countdown") ? 17f : 12f, 13f, 13f};
