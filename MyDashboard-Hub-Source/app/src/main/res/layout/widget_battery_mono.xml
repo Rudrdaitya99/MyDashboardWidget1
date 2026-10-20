@@ -1,0 +1,10 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widgetRoot" android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="horizontal" android:gravity="center_vertical" android:padding="10dp" android:background="@drawable/glass_card">
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="▰" android:textColor="#FFFFFF" android:textSize="26sp" android:paddingEnd="10dp"/>
+    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="BATTERY LEVEL" android:textColor="#B8B8B8" android:textSize="9sp" android:textStyle="bold"/>
+        <TextView android:id="@+id/batteryText" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Battery · 52%" android:textColor="#FFFFFF" android:textSize="20sp"/>
+        <View android:layout_width="match_parent" android:layout_height="3dp" android:background="#66FFFFFF" android:layout_marginTop="4dp"/>
+    </LinearLayout>
+</LinearLayout>
