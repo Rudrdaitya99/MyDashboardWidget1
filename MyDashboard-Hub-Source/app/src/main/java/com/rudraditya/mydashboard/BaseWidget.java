@@ -75,12 +75,27 @@ abstract class BaseWidget extends AppWidgetProvider {
                 try { v.setTextColor(R.id.chatgptText, accent); } catch (Exception ignored) {}
                 try { v.setTextColor(R.id.geminiText, accent); } catch (Exception ignored) {}
             }
+            applyResponsiveSizing(v, m.getAppWidgetOptions(id));
             m.updateAppWidget(id, v);
         }
     }
 
     @Override public void onAppWidgetOptionsChanged(Context c, AppWidgetManager m, int id, Bundle options) {
         onUpdate(c, m, new int[] { id });
+    }
+
+    private void applyResponsiveSizing(RemoteViews v, Bundle options) {
+        int width = options == null ? 170 : options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, 170);
+        int height = options == null ? 70 : options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, 70);
+        float scale = Math.max(width / 170f, height / 70f);
+        scale = Math.max(0.82f, Math.min(1.28f, scale));
+        int[] ids = {R.id.timeText, R.id.dateText, R.id.batteryText, R.id.weatherText,
+                R.id.ageText, R.id.countdownText, R.id.chatgptText, R.id.geminiText};
+        float[] base = {30f, 12f, 13f, 12f, 12f, 12f, 13f, 13f};
+        for (int i = 0; i < ids.length; i++) {
+            try { v.setTextViewTextSize(ids[i], android.util.TypedValue.COMPLEX_UNIT_SP, base[i] * scale); }
+            catch (Exception ignored) {}
+        }
     }
 
     private int battery(Context c) {
@@ -108,7 +123,14 @@ abstract class BaseWidget extends AppWidgetProvider {
     }
     private void setAppLink(RemoteViews v, Context c, int id, int viewId, String packageName, String url) {
         Intent i = c.getPackageManager().getLaunchIntentForPackage(packageName);
-        if (i == null) i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        if (i == null) {
+            i = new Intent(Intent.ACTION_MAIN);
+            i.addCategory(Intent.CATEGORY_LAUNCHER);
+            i.setPackage(packageName);
+            if (i.resolveActivity(c.getPackageManager()) == null) {
+                i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            }
+        }
         PendingIntent p = PendingIntent.getActivity(c, id + viewId, i,
             PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         v.setOnClickPendingIntent(viewId, p);
