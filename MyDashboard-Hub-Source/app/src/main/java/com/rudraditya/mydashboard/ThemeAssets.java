@@ -59,6 +59,16 @@ final class ThemeAssets {
         return widgetPhoto;
     }
 
+    static int widgetOverlay(Context context) {
+        int transparency = context.getSharedPreferences(MainActivity.PREFS, Context.MODE_PRIVATE)
+                .getInt("transparency", 20);
+        if (transparency >= 70) return R.drawable.glass_mountain_overlay_80;
+        if (transparency >= 50) return R.drawable.glass_mountain_overlay_60;
+        if (transparency >= 30) return R.drawable.glass_mountain_overlay_40;
+        if (transparency >= 10) return R.drawable.glass_mountain_overlay_20;
+        return R.drawable.glass_mountain_overlay_0;
+    }
+
     static synchronized Bitmap wallpaperPhoto(Context context) {
         if (wallpaperPhoto != null && !wallpaperPhoto.isRecycled()) return wallpaperPhoto;
         Bitmap src = source(context);
