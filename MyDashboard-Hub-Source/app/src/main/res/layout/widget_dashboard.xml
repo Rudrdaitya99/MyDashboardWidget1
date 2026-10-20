@@ -1,39 +1,31 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent" android:layout_height="match_parent"
-        android:orientation="vertical" android:padding="14dp" android:background="@drawable/glass_card">
-        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="All-in-One Dashboard" android:textColor="#BDB2FF" android:textSize="10sp"
-            android:textStyle="bold" android:letterSpacing="0.1"/>
-        <TextView android:id="@+id/timeText" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:text="09:41" android:textColor="#FFFFFF"
-            android:textSize="34sp" android:layout_marginTop="5dp" android:background="@drawable/glass_button"
-            android:padding="5dp"/>
-        <TextView android:id="@+id/dateText" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:text="MON · 18 OCT" android:textColor="#FFFFFF"
-            android:textSize="12sp" android:layout_marginTop="5dp" android:background="@drawable/glass_button"
-            android:padding="5dp"/>
-        <TextView android:id="@+id/batteryText" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:text="Battery · --%" android:textColor="#FFFFFF"
-            android:textSize="13sp" android:layout_marginTop="5dp" android:background="@drawable/glass_button"
-            android:padding="5dp"/>
-        <TextView android:id="@+id/weatherText" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:text="Weather · later update" android:textColor="#FFFFFF"
-            android:textSize="12sp" android:layout_marginTop="5dp" android:background="@drawable/glass_button"
-            android:padding="5dp"/>
-        <TextView android:id="@+id/ageText" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:text="Age · set birthday in app" android:textColor="#FFFFFF"
-            android:textSize="12sp" android:layout_marginTop="5dp" android:background="@drawable/glass_button"
-            android:padding="5dp"/>
-        <TextView android:id="@+id/countdownText" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:text="Countdown · set target" android:textColor="#FFFFFF"
-            android:textSize="12sp" android:layout_marginTop="5dp" android:background="@drawable/glass_button"
-            android:padding="5dp"/>
-        <TextView android:id="@+id/chatgptText" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:text="✳  ChatGPT" android:textColor="#FFFFFF"
-            android:textSize="12sp" android:layout_marginTop="5dp" android:background="@drawable/glass_button"
-            android:padding="5dp"/>
-        <TextView android:id="@+id/geminiText" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:text="✦  Gemini" android:textColor="#FFFFFF"
-            android:textSize="12sp" android:layout_marginTop="5dp" android:background="@drawable/glass_button"
-            android:padding="5dp"/>
-    </LinearLayout>
+    android:id="@+id/widgetRoot"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:padding="10dp" android:background="@drawable/glass_card">
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="DASHBOARD HUB" android:textColor="#BDB2FF" android:textSize="10sp" android:textStyle="bold" android:letterSpacing="0.1"/>
+    <TextView android:id="@+id/timeText" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="09:41" android:textColor="#FFFFFF" android:textSize="34sp" android:layout_marginTop="3dp"
+        android:background="@drawable/glass_button" android:padding="4dp"/>
+    <TextView android:id="@+id/dateText" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="MON · 18 OCT" android:textColor="#FFFFFF" android:textSize="12sp" android:layout_marginTop="4dp"
+        android:background="@drawable/glass_button" android:padding="4dp"/>
+    <TextView android:id="@+id/batteryText" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="Battery · --%" android:textColor="#FFFFFF" android:textSize="13sp" android:layout_marginTop="4dp"
+        android:background="@drawable/glass_button" android:padding="4dp"/>
+    <TextView android:id="@+id/weatherText" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="Weather · later update" android:textColor="#FFFFFF" android:textSize="12sp" android:layout_marginTop="4dp"
+        android:background="@drawable/glass_button" android:padding="4dp"/>
+    <TextView android:id="@+id/ageText" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="Age · set birthday in app" android:textColor="#FFFFFF" android:textSize="12sp" android:layout_marginTop="4dp"
+        android:background="@drawable/glass_button" android:padding="4dp"/>
+    <TextView android:id="@+id/countdownText" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="Countdown · set target" android:textColor="#FFFFFF" android:textSize="12sp" android:layout_marginTop="4dp"
+        android:background="@drawable/glass_button" android:padding="4dp"/>
+    <TextView android:id="@+id/chatgptText" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="✳ ChatGPT" android:textColor="#FFFFFF" android:textSize="12sp" android:layout_marginTop="4dp"
+        android:background="@drawable/glass_button" android:padding="4dp"/>
+    <TextView android:id="@+id/geminiText" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="✦ Gemini" android:textColor="#FFFFFF" android:textSize="12sp" android:layout_marginTop="4dp"
+        android:background="@drawable/glass_button" android:padding="4dp"/>
+</LinearLayout>
