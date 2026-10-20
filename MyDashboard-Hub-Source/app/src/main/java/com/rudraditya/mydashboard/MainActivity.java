@@ -236,7 +236,7 @@ public class MainActivity extends Activity {
 
     private LinearLayout.LayoutParams previewLayoutParams(String key, int size) {
         int height = size == 0 ? dp(48) : size == 1 ? dp(68) : dp(126);
-        int width = size == 0 ? dp(178) : -1;
+        int width = size == 0 ? dp(124) : -1;
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, height);
         lp.gravity = Gravity.CENTER_HORIZONTAL;
         return lp;
