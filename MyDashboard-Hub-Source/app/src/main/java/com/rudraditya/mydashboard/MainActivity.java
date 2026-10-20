@@ -42,7 +42,7 @@ public class MainActivity extends Activity {
     private SharedPreferences prefs;
     private int white = Color.WHITE;
     private int muted = Color.rgb(190,190,190);
-    private int cardColor = Color.rgb(22,22,22);
+    private int cardColor = Color.rgb(29,29,29);
     private int borderColor = Color.rgb(115,115,115);
     private Bitmap wallpaperPreview;
 
@@ -311,7 +311,7 @@ public class MainActivity extends Activity {
     private LinearLayout panel() {
         LinearLayout p = column();
         p.setPadding(dp(13), dp(12), dp(13), dp(12));
-        p.setBackground(shape(Color.rgb(13,13,13), Color.rgb(49,49,49), 16));
+        p.setBackground(shape(Color.rgb(27,27,27), Color.rgb(100,100,100), 16));
         return p;
     }
     private LinearLayout row() { LinearLayout l = new LinearLayout(this); l.setOrientation(LinearLayout.HORIZONTAL); return l; }
@@ -323,7 +323,7 @@ public class MainActivity extends Activity {
     }
     private TextView action(String label) {
         TextView t = text(label, 12, white, true); t.setGravity(Gravity.CENTER);
-        t.setBackground(shape(Color.rgb(24,24,24), Color.rgb(100,100,100), 13));
+        t.setBackground(shape(Color.rgb(34,34,34), Color.rgb(130,130,130), 13));
         t.setPadding(dp(10), dp(10), dp(10), dp(10));
         return t;
     }
