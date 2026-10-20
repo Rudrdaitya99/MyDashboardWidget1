@@ -333,9 +333,19 @@ public class MainActivity extends Activity {
 
     private void openAppOrWeb(String packageName, String url) {
         Intent i = getPackageManager().getLaunchIntentForPackage(packageName);
-        if (i == null) i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        if (i == null) {
+            i = new Intent(Intent.ACTION_MAIN);
+            i.addCategory(Intent.CATEGORY_LAUNCHER);
+            i.setPackage(packageName);
+            if (i.resolveActivity(getPackageManager()) == null) {
+                i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            }
+        }
         try { startActivity(i); } catch (Exception e) {
-            Toast.makeText(this, "No app or browser available", Toast.LENGTH_SHORT).show();
+            try { startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url))); }
+            catch (Exception ignored) {
+                Toast.makeText(this, "App and browser are unavailable", Toast.LENGTH_SHORT).show();
+            }
         }
     }
     private boolean validDate(String s) {
