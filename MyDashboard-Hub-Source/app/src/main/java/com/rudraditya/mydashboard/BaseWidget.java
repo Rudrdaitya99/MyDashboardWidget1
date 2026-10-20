@@ -58,7 +58,7 @@ abstract class BaseWidget extends AppWidgetProvider {
                 try {
                     android.graphics.Bitmap mountain = ThemeAssets.widgetPhoto(c);
                     if (mountain != null) v.setImageViewBitmap(R.id.mountainBackground, mountain);
-                    v.setInt(R.id.widgetRoot, "setBackgroundResource", R.drawable.glass_mountain_overlay);
+                    v.setInt(R.id.widgetRoot, "setBackgroundResource", ThemeAssets.widgetOverlay(c));
                 } catch (Exception ignored) {}
             } else {
                 int background = transparency >= 70 ? R.drawable.glass_card_80
