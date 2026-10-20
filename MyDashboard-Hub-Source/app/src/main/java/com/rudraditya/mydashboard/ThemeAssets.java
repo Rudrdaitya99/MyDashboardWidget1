@@ -53,15 +53,9 @@ final class ThemeAssets {
         Paint photo = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
         canvas.drawBitmap(src, null, new RectF(0, 0, w, h), photo);
         Paint shade = new Paint(Paint.ANTI_ALIAS_FLAG);
-        shade.setColor(0x70000000);
+        shade.setColor(0x25000000);
         canvas.drawRect(0, 0, w, h, shade);
         canvas.restore();
-
-        Paint border = new Paint(Paint.ANTI_ALIAS_FLAG);
-        border.setStyle(Paint.Style.STROKE);
-        border.setStrokeWidth(3f);
-        border.setColor(0xCCFFFFFF);
-        canvas.drawRoundRect(new RectF(2, 2, w - 2, h - 2), 28, 28, border);
         return widgetPhoto;
     }
 
