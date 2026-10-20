@@ -41,7 +41,7 @@ public class MainActivity extends Activity {
 
         SeekBar opacity = findViewById(R.id.opacitySeek);
         TextView opacityLabel = findViewById(R.id.opacityLabel);
-        int savedTransparency = p.getInt("transparency", 20);
+        int savedTransparency = p.contains("transparency") ? p.getInt("transparency", 20) : 100 - p.getInt("opacity", 85);
         opacity.setProgress(savedTransparency / 2);
         opacityLabel.setText("Glass transparency: " + savedTransparency + "%");
         opacity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
