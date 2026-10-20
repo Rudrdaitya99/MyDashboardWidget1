@@ -1,0 +1,9 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widgetRoot" android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="horizontal" android:gravity="center_vertical" android:padding="4dp" android:background="@drawable/glass_card">
+    <AnalogClock android:id="@+id/analogClock" android:layout_width="38dp" android:layout_height="38dp"
+        android:dial="@drawable/clock_dial" android:hand_hour="@drawable/clock_hand_hour" android:hand_minute="@drawable/clock_hand_minute"/>
+    <TextView android:id="@+id/dateText" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+        android:layout_marginStart="7dp" android:text="TUE · 20 OCT" android:textColor="#FFFFFF" android:textSize="10sp" android:singleLine="true" android:ellipsize="end"/>
+    <TextView android:id="@+id/timeText" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" android:text="09:41"/>
+</LinearLayout>
