@@ -41,14 +41,15 @@ public class MainActivity extends Activity {
 
         SeekBar opacity = findViewById(R.id.opacitySeek);
         TextView opacityLabel = findViewById(R.id.opacityLabel);
-        opacity.setProgress(100 - p.getInt("opacity", 85));
-        opacityLabel.setText("Glass opacity: " + p.getInt("opacity",85) + "%");
+        int savedTransparency = p.getInt("transparency", 20);
+        opacity.setProgress(savedTransparency / 2);
+        opacityLabel.setText("Glass transparency: " + savedTransparency + "%");
         opacity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar bar, int progress, boolean fromUser) {
-                int value = 100 - progress;
-                opacityLabel.setText("Glass opacity: " + value + "%");
+                int value = progress * 2;
+                opacityLabel.setText("Glass transparency: " + value + "%");
                 if (fromUser) {
-                    p.edit().putInt("opacity", value).apply();
+                    p.edit().putInt("transparency", value).putInt("opacity", 100 - value).apply();
                     DashboardRefresh.refresh(MainActivity.this);
                 }
             }
