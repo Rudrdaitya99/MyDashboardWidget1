@@ -88,7 +88,7 @@ public class MainActivity extends Activity {
         addGallery("Age Counter", "age", AgeWidget.class,
                 new String[]{"Black Glass", "Snow Ridge"});
         addGallery("Countdown", "countdown", CountdownWidget.class,
-                new String[]{"Black Glass", "Snow Ridge Countdown"});
+                new String[]{"Black Glass", "Snow Ridge"});
         addGallery("AI Folder", "ai", AIFolderWidget.class,
                 new String[]{"Black Glass", "Snow Ridge"});
 
