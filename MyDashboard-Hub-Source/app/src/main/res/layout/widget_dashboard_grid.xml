@@ -1,0 +1,20 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widgetRoot" android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:padding="8dp" android:background="@drawable/glass_card">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+            <TextView android:id="@+id/timeText" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="09:41" android:textColor="#FFFFFF" android:textSize="27sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/dateText" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="TUE · 20 OCT" android:textColor="#C8C8C8" android:textSize="10sp"/>
+        </LinearLayout>
+        <TextView android:id="@+id/batteryText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Battery · 52%" android:textColor="#FFFFFF" android:textSize="11sp" android:background="@drawable/glass_button" android:padding="5dp"/>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="horizontal" android:layout_marginTop="5dp">
+        <TextView android:id="@+id/ageText" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center_vertical" android:text="Age · 5145 days" android:textColor="#FFFFFF" android:textSize="11sp" android:background="@drawable/glass_button" android:padding="6dp"/>
+        <TextView android:id="@+id/countdownText" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginStart="5dp" android:gravity="center_vertical" android:text="Countdown · 42 days left" android:textColor="#FFFFFF" android:textSize="11sp" android:background="@drawable/glass_button" android:padding="6dp"/>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginTop="4dp">
+        <TextView android:id="@+id/weatherText" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" android:text="Weather"/>
+        <TextView android:id="@+id/chatgptText" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="✳ ChatGPT" android:textColor="#FFFFFF" android:textSize="10sp" android:background="@drawable/glass_button" android:padding="4dp"/>
+        <TextView android:id="@+id/geminiText" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="4dp" android:gravity="center" android:text="✦ Gemini" android:textColor="#FFFFFF" android:textSize="10sp" android:background="@drawable/glass_button" android:padding="4dp"/>
+    </LinearLayout>
+</LinearLayout>
