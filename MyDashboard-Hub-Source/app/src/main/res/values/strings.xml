@@ -6,4 +6,10 @@
     <string name="desc_age">Age in days widget</string>
     <string name="desc_countdown">Countdown widget</string>
     <string name="desc_ai">ChatGPT and Gemini shortcut folder</string>
+    <string name="widget_label_dashboard">Dashboard Hub</string>
+    <string name="widget_label_clock">Clock and Date</string>
+    <string name="widget_label_battery">Battery Level</string>
+    <string name="widget_label_age">Age Counter</string>
+    <string name="widget_label_countdown">Countdown</string>
+    <string name="widget_label_ai">ChatGPT and Gemini</string>
 </resources>
