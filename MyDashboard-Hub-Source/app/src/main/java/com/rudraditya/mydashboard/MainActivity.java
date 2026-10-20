@@ -88,7 +88,7 @@ public class MainActivity extends Activity {
         addGallery("Age Counter", "age", AgeWidget.class,
                 new String[]{"Black Glass", "White Ridge Counter"});
         addGallery("Countdown", "countdown", CountdownWidget.class,
-                new String[]{"Counter", "Minimal"});
+                new String[]{"Black Glass", "Snow Ridge Countdown"});
         addGallery("AI Folder", "ai", AIFolderWidget.class,
                 new String[]{"Black Glass", "White Ridge AI"});
 
@@ -203,11 +203,11 @@ public class MainActivity extends Activity {
     private View preview(String key, int style) {
         int layout;
         if (key.equals("dashboard")) layout = style == 0 ? R.layout.widget_dashboard_compact : R.layout.widget_dashboard_compact_mono;
-        else if (key.equals("clock")) layout = style == 0 ? R.layout.widget_clock_compact : R.layout.widget_clock_compact_mono;
-        else if (key.equals("battery")) layout = style == 0 ? R.layout.widget_battery_compact : R.layout.widget_battery_mono;
-        else if (key.equals("age")) layout = style == 0 ? R.layout.widget_age_compact : R.layout.widget_age_mono;
-        else if (key.equals("countdown")) layout = style == 0 ? R.layout.widget_countdown_compact : R.layout.widget_countdown_mono;
-        else layout = style == 0 ? R.layout.widget_ai_compact : R.layout.widget_ai_mono;
+        else if (key.equals("clock")) layout = style == 0 ? R.layout.widget_clock_compact : R.layout.widget_clock_compact_snow;
+        else if (key.equals("battery")) layout = style == 0 ? R.layout.widget_battery_compact : R.layout.widget_battery_snow;
+        else if (key.equals("age")) layout = style == 0 ? R.layout.widget_age_compact : R.layout.widget_age_snow;
+        else if (key.equals("countdown")) layout = style == 0 ? R.layout.widget_countdown_compact : R.layout.widget_countdown_snow;
+        else layout = style == 0 ? R.layout.widget_ai_compact : R.layout.widget_ai_snow;
 
         View actual = LayoutInflater.from(this).inflate(layout, null, false);
         actual.setLayoutParams(new LinearLayout.LayoutParams(-1, dp(key.equals("dashboard") ? 76 : 68)));
@@ -219,6 +219,15 @@ public class MainActivity extends Activity {
         setPreviewText(actual, R.id.ageText, "Age · " + previewAge() + " days");
         setPreviewText(actual, R.id.countdownText, "Countdown · 42 days left");
         setPreviewText(actual, R.id.weatherText, "Weather · 24°");
+        if (style == 1) {
+            ImageView mountain = actual.findViewById(R.id.mountainBackground);
+            if (mountain != null) {
+                Bitmap photo = ThemeAssets.widgetPhoto(this);
+                if (photo != null) mountain.setImageBitmap(photo);
+            }
+            View card = actual.findViewById(R.id.widgetRoot);
+            if (card != null) card.setBackgroundColor(0x99060606);
+        }
         return actual;
     }
 
@@ -239,15 +248,17 @@ public class MainActivity extends Activity {
 
     private void addWallpaperSection() {
         root.addView(text("WALLPAPER", 11, muted, true));
-        root.addView(text("White mountain lines · matched to your glass widgets", 13, white, false));
+        root.addView(text("Real mountain photography · matched to Snow Ridge widgets", 13, white, false));
         LinearLayout p = panel();
         ImageView image = new ImageView(this);
         wallpaperPreview = makeWallpaper();
         image.setImageBitmap(wallpaperPreview);
-        image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        image.setScaleType(ImageView.ScaleType.FIT_CENTER);
         image.setBackground(shape(Color.BLACK, Color.rgb(180,180,180), 16));
         image.setClipToOutline(true);
-        p.addView(image, new LinearLayout.LayoutParams(-1, dp(190)));
+        LinearLayout.LayoutParams wallpaperSize = new LinearLayout.LayoutParams(dp(240), dp(460));
+        wallpaperSize.gravity = Gravity.CENTER_HORIZONTAL;
+        p.addView(image, wallpaperSize);
         TextView apply = action("SET AS WALLPAPER");
         LinearLayout.LayoutParams ap = new LinearLayout.LayoutParams(-1, dp(46));
         ap.topMargin = dp(10);
@@ -264,63 +275,8 @@ public class MainActivity extends Activity {
     }
 
     private Bitmap makeWallpaper() {
-        int w = 720, h = 1440;
-        Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        Paint bg = new Paint(Paint.ANTI_ALIAS_FLAG);
-        bg.setShader(new LinearGradient(0, 0, w * 0.8f, h, new int[]{0xFF050505, 0xFF171717, 0xFF080808}, null, Shader.TileMode.CLAMP));
-        canvas.drawRect(0, 0, w, h, bg);
-        Paint glow = new Paint(Paint.ANTI_ALIAS_FLAG);
-        glow.setShader(new LinearGradient(0, h * 0.40f, 0, h * 0.83f, new int[]{0x00303030, 0x55444444, 0x00000000}, null, Shader.TileMode.CLAMP));
-        canvas.drawRect(0, h * 0.35f, w, h * 0.9f, glow);
-        Path ridge = new Path();
-        ridge.moveTo(-40, h * 0.56f);
-        ridge.lineTo(w * 0.14f, h * 0.42f);
-        ridge.lineTo(w * 0.27f, h * 0.49f);
-        ridge.lineTo(w * 0.43f, h * 0.31f);
-        ridge.lineTo(w * 0.58f, h * 0.47f);
-        ridge.lineTo(w * 0.72f, h * 0.36f);
-        ridge.lineTo(w * 0.88f, h * 0.48f);
-        ridge.lineTo(w * 1.08f, h * 0.38f);
-        ridge.lineTo(w * 1.08f, h * 0.78f);
-        ridge.lineTo(-40, h * 0.78f);
-        ridge.close();
-        Paint mountain = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mountain.setShader(new LinearGradient(0, h * 0.33f, 0, h * 0.79f, new int[]{0xFF383838, 0xFF111111, 0xFF050505}, null, Shader.TileMode.CLAMP));
-        canvas.drawPath(ridge, mountain);
-        Paint outline = new Paint(Paint.ANTI_ALIAS_FLAG);
-        outline.setStyle(Paint.Style.STROKE);
-        outline.setStrokeJoin(Paint.Join.ROUND);
-        outline.setStrokeCap(Paint.Cap.ROUND);
-        outline.setStrokeWidth(2.6f);
-        outline.setColor(0xD9FFFFFF);
-        Path crest = new Path();
-        crest.moveTo(-40, h * 0.56f);
-        crest.lineTo(w * 0.14f, h * 0.42f);
-        crest.lineTo(w * 0.27f, h * 0.49f);
-        crest.lineTo(w * 0.43f, h * 0.31f);
-        crest.lineTo(w * 0.58f, h * 0.47f);
-        crest.lineTo(w * 0.72f, h * 0.36f);
-        crest.lineTo(w * 0.88f, h * 0.48f);
-        crest.lineTo(w * 1.08f, h * 0.38f);
-        canvas.drawPath(crest, outline);
-        outline.setStrokeWidth(1.0f);
-        outline.setColor(0x66FFFFFF);
-        for (int i = 0; i < 5; i++) {
-            Path contour = new Path();
-            float y = h * (0.61f + i * 0.035f);
-            contour.moveTo(-20, y);
-            contour.cubicTo(w * 0.25f, y - h * 0.035f, w * 0.57f, y + h * 0.025f, w + 20, y - h * 0.02f);
-            canvas.drawPath(contour, outline);
-        }
-        Paint orb = new Paint(Paint.ANTI_ALIAS_FLAG);
-        orb.setStyle(Paint.Style.STROKE);
-        orb.setStrokeWidth(1.3f);
-        orb.setColor(0x66FFFFFF);
-        canvas.drawCircle(w * 0.78f, h * 0.81f, w * 0.20f, orb);
-        return bitmap;
+        return ThemeAssets.wallpaperPhoto(this);
     }
-
 
     private void applyDesign(String key, int style, Class<?> provider, String title, String design) {
         prefs.edit().putInt("style_" + key, style).apply();
