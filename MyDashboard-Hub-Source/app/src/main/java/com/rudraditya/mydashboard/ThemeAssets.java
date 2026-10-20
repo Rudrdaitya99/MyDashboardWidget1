@@ -43,11 +43,11 @@ final class ThemeAssets {
         Bitmap src = source(context);
         if (src == null) return null;
 
-        int w = 480, h = 240;
+        int w = 360, h = 180;
         widgetPhoto = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(widgetPhoto);
         Path clip = new Path();
-        clip.addRoundRect(new RectF(0, 0, w, h), 30, 30, Path.Direction.CW);
+        clip.addRoundRect(new RectF(0, 0, w, h), 22, 22, Path.Direction.CW);
         canvas.save();
         canvas.clipPath(clip);
         Paint photo = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
