@@ -54,15 +54,23 @@ abstract class BaseWidget extends AppWidgetProvider {
             int accent = p.getInt("accent", Color.rgb(189, 178, 255));
             int opacity = p.getInt("opacity", 85);
             int alpha = Math.max(0, Math.min(255, Math.round(opacity * 2.55f)));
-            try { v.setTextColor(R.id.timeText, Color.WHITE); } catch (Exception ignored) {}
-            int[] accentIds = { R.id.disabledTitle };
-            try { v.setTextColor(R.id.disabledTitle, accent); } catch (Exception ignored) {}
-            int[] labelIds = { R.id.weatherText, R.id.ageText, R.id.countdownText };
-            for (int viewId : labelIds) { try { v.setTextColor(viewId, Color.WHITE); } catch (Exception ignored) {} }
-            try { v.setInt(R.id.widgetRoot, "setBackgroundColor", Color.argb(alpha, 18, 22, 35)); } catch (Exception ignored) {}
-            try { v.setTextColor(R.id.timeText, accent); } catch (Exception ignored) {}
-            try { v.setTextColor(R.id.chatgptText, accent); } catch (Exception ignored) {}
-            try { v.setTextColor(R.id.geminiText, accent); } catch (Exception ignored) {}
+            try { v.setFloat(R.id.widgetRoot, "setAlpha", opacity / 100f); } catch (Exception ignored) {}
+            if (k.equals("dashboard") || k.equals("clock")) {
+                try { v.setTextColor(R.id.timeText, accent); } catch (Exception ignored) {}
+            }
+            if (k.equals("dashboard") || k.equals("battery")) {
+                try { v.setTextColor(R.id.batteryText, accent); } catch (Exception ignored) {}
+            }
+            if (k.equals("dashboard") || k.equals("age")) {
+                try { v.setTextColor(R.id.ageText, accent); } catch (Exception ignored) {}
+            }
+            if (k.equals("dashboard") || k.equals("countdown")) {
+                try { v.setTextColor(R.id.countdownText, accent); } catch (Exception ignored) {}
+            }
+            if (k.equals("dashboard") || k.equals("ai")) {
+                try { v.setTextColor(R.id.chatgptText, accent); } catch (Exception ignored) {}
+                try { v.setTextColor(R.id.geminiText, accent); } catch (Exception ignored) {}
+            }
             m.updateAppWidget(id, v);
         }
     }
