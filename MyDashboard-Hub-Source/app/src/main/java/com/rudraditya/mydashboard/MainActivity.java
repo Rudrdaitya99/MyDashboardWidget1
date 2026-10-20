@@ -7,13 +7,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.Shader;
+import android.graphics.LinearGradient;
+import android.app.WallpaperManager;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
@@ -28,9 +37,10 @@ public class MainActivity extends Activity {
     private LinearLayout root;
     private SharedPreferences prefs;
     private int white = Color.WHITE;
-    private int muted = Color.rgb(166,166,166);
-    private int cardColor = Color.rgb(16,16,16);
-    private int borderColor = Color.rgb(67,67,67);
+    private int muted = Color.rgb(190,190,190);
+    private int cardColor = Color.rgb(22,22,22);
+    private int borderColor = Color.rgb(115,115,115);
+    private Bitmap wallpaperPreview;
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
@@ -41,7 +51,7 @@ public class MainActivity extends Activity {
     private void buildScreen() {
         ScrollView scroll = new ScrollView(this);
         scroll.setFillViewport(true);
-        scroll.setBackgroundColor(Color.rgb(4,4,4));
+        scroll.setBackgroundColor(Color.rgb(10,10,10));
         root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
         root.setPadding(dp(18), dp(20), dp(18), dp(28));
@@ -77,6 +87,8 @@ public class MainActivity extends Activity {
                 new String[]{"Counter", "Minimal"});
         addGallery("AI Folder", "ai", AIFolderWidget.class,
                 new String[]{"List", "Split Glass"});
+
+        addWallpaperSection();
 
         space(root, 10);
         root.addView(text("APPEARANCE", 11, muted, true));
@@ -178,57 +190,95 @@ public class MainActivity extends Activity {
     }
 
     private View preview(String key, int style) {
-        LinearLayout box = column();
-        box.setGravity(Gravity.CENTER_VERTICAL);
-        box.setPadding(dp(7), dp(8), dp(7), dp(8));
-        box.setMinimumHeight(dp(key.equals("dashboard") ? 72 : 58));
-        box.setBackground(shape(style == 0 ? Color.rgb(25,25,25) : Color.rgb(8,8,8),
-                style == 0 ? Color.rgb(83,83,83) : Color.rgb(125,125,125), 12));
-        if (key.equals("clock")) {
-            if (style == 0) {
-                box.addView(text("12:45", 23, white, false));
-                box.addView(text("TUE · 20 OCT", 9, muted, false));
-            } else {
-                box.setOrientation(LinearLayout.HORIZONTAL);
-                box.addView(text("12:45", 22, white, false));
-                LinearLayout r = column(); r.setPadding(dp(6),0,0,0);
-                r.addView(text("TIMELESS", 7, muted, true)); r.addView(text("TUE · 20 OCT", 8, white, false));
-                box.addView(r);
+        int layout;
+        if (key.equals("dashboard")) layout = style == 0 ? R.layout.widget_dashboard_compact : R.layout.widget_dashboard_compact_mono;
+        else if (key.equals("clock")) layout = style == 0 ? R.layout.widget_clock_compact : R.layout.widget_clock_compact_mono;
+        else if (key.equals("battery")) layout = style == 0 ? R.layout.widget_battery : R.layout.widget_battery_mono;
+        else if (key.equals("age")) layout = style == 0 ? R.layout.widget_age : R.layout.widget_age_mono;
+        else if (key.equals("countdown")) layout = style == 0 ? R.layout.widget_countdown : R.layout.widget_countdown_mono;
+        else layout = style == 0 ? R.layout.widget_ai_compact : R.layout.widget_ai_mono;
+
+        View actual = LayoutInflater.from(this).inflate(layout, null, false);
+        actual.setLayoutParams(new LinearLayout.LayoutParams(-1, dp(key.equals("dashboard") ? 76 : 68)));
+        String now = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
+        String date = new SimpleDateFormat("EEE · d MMM", Locale.getDefault()).format(new Date());
+        setPreviewText(actual, R.id.timeText, now);
+        setPreviewText(actual, R.id.dateText, date);
+        setPreviewText(actual, R.id.batteryText, "Battery · 52%");
+        setPreviewText(actual, R.id.ageText, "Age · " + previewAge() + " days");
+        setPreviewText(actual, R.id.countdownText, "Countdown · 42 days left");
+        setPreviewText(actual, R.id.weatherText, "Weather · 24°");
+        return actual;
+    }
+
+    private void setPreviewText(View parent, int id, String value) {
+        TextView t = parent.findViewById(id);
+        if (t != null) t.setText(value);
+    }
+
+    private long previewAge() {
+        String birth = prefs.getString("birth", "");
+        if (birth.isEmpty()) return 5145;
+        try {
+            SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+            f.setLenient(false);
+            return Math.max(0, (new Date().getTime() - f.parse(birth).getTime()) / 86400000L);
+        } catch (Exception e) { return 5145; }
+    }
+
+    private void addWallpaperSection() {
+        root.addView(text("WALLPAPER", 11, muted, true));
+        root.addView(text("Monochrome waves · matched to your glass widgets", 13, white, false));
+        LinearLayout p = panel();
+        ImageView image = new ImageView(this);
+        wallpaperPreview = makeWallpaper();
+        image.setImageBitmap(wallpaperPreview);
+        image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        image.setBackground(shape(Color.BLACK, Color.rgb(180,180,180), 16));
+        image.setClipToOutline(true);
+        p.addView(image, new LinearLayout.LayoutParams(-1, dp(190)));
+        TextView apply = action("SET AS WALLPAPER");
+        LinearLayout.LayoutParams ap = new LinearLayout.LayoutParams(-1, dp(46));
+        ap.topMargin = dp(10);
+        p.addView(apply, ap);
+        apply.setOnClickListener(v -> {
+            try {
+                WallpaperManager.getInstance(this).setBitmap(wallpaperPreview);
+                Toast.makeText(this, "Monochrome wallpaper applied", Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Toast.makeText(this, "Could not set wallpaper. Check Android wallpaper permission.", Toast.LENGTH_LONG).show();
             }
-        } else if (key.equals("dashboard")) {
-            if (style == 0) {
-                box.addView(text("12:45", 22, white, true));
-                box.addView(text("Tue · 20 Oct  ·  52%", 9, muted, false));
-            } else {
-                box.setOrientation(LinearLayout.HORIZONTAL);
-                box.addView(text("12:45", 21, white, false));
-                LinearLayout r = column(); r.setPadding(dp(7),0,0,0);
-                r.addView(text("TUE · 20 OCT", 8, white, true)); r.addView(text("Battery · 52%", 9, muted, false));
-                box.addView(r);
-            }
-        } else if (key.equals("battery")) {
-            box.addView(text(style == 0 ? "▰  52%" : "BATTERY LEVEL", style == 0 ? 21 : 8, white, true));
-            if (style == 1) box.addView(text("52%  ━━━━━━", 16, white, false));
-            else box.addView(text("Battery", 9, muted, false));
-        } else if (key.equals("age")) {
-            box.addView(text(style == 0 ? "Age · 5145 days" : "DAYS SINCE BIRTH", style == 0 ? 12 : 8, white, true));
-            if (style == 1) box.addView(text("5145 days", 17, white, false));
-        } else if (key.equals("countdown")) {
-            box.addView(text(style == 0 ? "Target · 42 days" : "COUNTDOWN", style == 0 ? 12 : 8, white, true));
-            if (style == 1) box.addView(text("42 days left", 17, white, false));
-        } else {
-            if (style == 0) {
-                box.addView(text("✳  ChatGPT", 12, white, true));
-                box.addView(text("✦  Gemini", 12, white, true));
-            } else {
-                box.setOrientation(LinearLayout.HORIZONTAL);
-                TextView a = text("✳\nChatGPT", 10, white, true); a.setGravity(Gravity.CENTER);
-                TextView b = text("✦\nGemini", 10, white, true); b.setGravity(Gravity.CENTER);
-                box.addView(a, new LinearLayout.LayoutParams(0, -2, 1));
-                box.addView(b, new LinearLayout.LayoutParams(0, -2, 1));
-            }
+        });
+    }
+
+    private Bitmap makeWallpaper() {
+        int w = 720, h = 1440;
+        Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        Paint bg = new Paint(Paint.ANTI_ALIAS_FLAG);
+        bg.setShader(new LinearGradient(0, 0, w, h, new int[]{0xFF050505, 0xFF181818, 0xFF030303}, null, Shader.TileMode.CLAMP));
+        canvas.drawRect(0, 0, w, h, bg);
+        for (int i = 0; i < 18; i++) {
+            Paint line = new Paint(Paint.ANTI_ALIAS_FLAG);
+            line.setStyle(Paint.Style.STROKE);
+            line.setStrokeWidth(i % 4 == 0 ? 2.2f : 1.0f);
+            line.setColor(Color.argb(i % 4 == 0 ? 125 : 55, 238, 238, 238));
+            Path path = new Path();
+            float offset = i * 22f;
+            path.moveTo(-60, h * 0.30f + offset);
+            path.cubicTo(w * 0.22f, h * 0.22f + offset, w * 0.38f, h * 0.49f - offset * 0.15f, w * 0.63f, h * 0.37f + offset * 0.25f);
+            path.cubicTo(w * 0.82f, h * 0.28f + offset * 0.1f, w * 0.86f, h * 0.55f + offset * 0.3f, w + 60, h * 0.47f + offset * 0.12f);
+            canvas.drawPath(path, line);
         }
-        return box;
+        Paint orb = new Paint(Paint.ANTI_ALIAS_FLAG);
+        orb.setShader(new LinearGradient(w * 0.2f, h * 0.65f, w * 0.85f, h * 0.92f, 0xFF444444, 0xFF050505, Shader.TileMode.CLAMP));
+        canvas.drawCircle(w * 0.52f, h * 0.80f, w * 0.31f, orb);
+        Paint edge = new Paint(Paint.ANTI_ALIAS_FLAG);
+        edge.setStyle(Paint.Style.STROKE);
+        edge.setStrokeWidth(2f);
+        edge.setColor(0x99FFFFFF);
+        canvas.drawCircle(w * 0.52f, h * 0.80f, w * 0.31f, edge);
+        return bitmap;
     }
 
     private void applyDesign(String key, int style, Class<?> provider, String title, String design) {
