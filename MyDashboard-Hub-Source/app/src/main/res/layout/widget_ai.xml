@@ -2,7 +2,7 @@
     android:id="@+id/widgetRoot" android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical" android:padding="8dp" android:background="@drawable/glass_card">
     <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="AI FOLDER"
-        android:textColor="#BDB2FF" android:textSize="10sp" android:textStyle="bold"/>
+        android:textColor="#B8B8B8" android:textSize="10sp" android:textStyle="bold"/>
     <TextView android:id="@+id/chatgptText" android:layout_width="match_parent" android:layout_height="wrap_content"
         android:text="✳ ChatGPT" android:textColor="#FFFFFF" android:textSize="15sp" android:singleLine="true"
         android:ellipsize="end" android:layout_marginTop="4dp" android:background="@drawable/glass_button" android:padding="4dp"/>
