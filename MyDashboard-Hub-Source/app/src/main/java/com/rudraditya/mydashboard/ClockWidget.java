@@ -11,8 +11,8 @@ public class ClockWidget extends BaseWidget {
         Bundle options = m.getAppWidgetOptions(id);
         int minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, 0);
         boolean compact = minHeight < 110;
-        if (style == 2) return compact ? R.layout.widget_clock_analog_compact : R.layout.widget_clock_analog;
-        if (style == 1) return compact ? R.layout.widget_clock_compact_snow : R.layout.widget_clock_snow;
+        if (style == 1) return compact ? R.layout.widget_clock_analog_compact : R.layout.widget_clock_analog;
+        if (style == 2) return compact ? R.layout.widget_clock_hybrid_compact : R.layout.widget_clock_hybrid;
         return compact ? R.layout.widget_clock_compact : R.layout.widget_clock;
     }
     @Override String kind() { return "clock"; }
