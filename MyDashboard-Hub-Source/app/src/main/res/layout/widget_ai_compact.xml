@@ -1,0 +1,45 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widgetRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="6dp"
+    android:background="@drawable/glass_card">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AI"
+        android:textColor="#BDB2FF"
+        android:textStyle="bold"
+        android:textSize="10sp"
+        android:padding="5dp" />
+    <TextView
+        android:id="@+id/chatgptText"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="✳ ChatGPT"
+        android:textColor="#FFFFFF"
+        android:textSize="13sp"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:background="@drawable/glass_button"
+        android:padding="4dp"
+        android:layout_marginEnd="4dp" />
+    <TextView
+        android:id="@+id/geminiText"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="✦ Gemini"
+        android:textColor="#FFFFFF"
+        android:textSize="13sp"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:background="@drawable/glass_button"
+        android:padding="4dp"
+        android:layout_marginStart="4dp" />
+</LinearLayout>
