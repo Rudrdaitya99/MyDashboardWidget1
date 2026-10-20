@@ -324,6 +324,13 @@ public class MainActivity extends Activity {
         return actual;
     }
 
+    private void scalePreviewText(View parent, int id, float factor) {
+        TextView view = parent.findViewById(id);
+        if (view == null || factor <= 0f) return;
+        view.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX,
+                view.getTextSize() * factor);
+    }
+
     private void setPreviewText(View parent, int id, String value) {
         TextView t = parent.findViewById(id);
         if (t != null) t.setText(value);
