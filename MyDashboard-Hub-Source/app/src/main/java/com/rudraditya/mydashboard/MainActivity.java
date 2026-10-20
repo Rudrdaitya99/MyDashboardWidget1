@@ -253,13 +253,16 @@ public class MainActivity extends Activity {
                     : (style == 0 ? R.layout.widget_clock_compact : R.layout.widget_clock_compact_snow);
         } else if (key.equals("battery")) {
             layout = large ? (style == 0 ? R.layout.widget_battery : R.layout.widget_battery_snow)
-                    : (style == 0 ? R.layout.widget_battery_compact : R.layout.widget_battery_snow);
+                    : (style == 0 ? R.layout.widget_battery_compact
+                    : (size == 0 ? R.layout.widget_battery_compact_snow : R.layout.widget_battery_snow));
         } else if (key.equals("age")) {
             layout = large ? (style == 0 ? R.layout.widget_age : R.layout.widget_age_snow)
-                    : (style == 0 ? R.layout.widget_age_compact : R.layout.widget_age_snow);
+                    : (style == 0 ? R.layout.widget_age_compact
+                    : (size == 0 ? R.layout.widget_age_compact_snow : R.layout.widget_age_snow));
         } else if (key.equals("countdown")) {
             layout = large ? (style == 0 ? R.layout.widget_countdown : R.layout.widget_countdown_snow)
-                    : (style == 0 ? R.layout.widget_countdown_compact : R.layout.widget_countdown_snow);
+                    : (style == 0 ? R.layout.widget_countdown_compact
+                    : (size == 0 ? R.layout.widget_countdown_compact_snow : R.layout.widget_countdown_snow));
         } else {
             layout = large ? (style == 0 ? R.layout.widget_ai : R.layout.widget_ai_snow)
                     : (style == 0 ? R.layout.widget_ai_compact : R.layout.widget_ai_snow);
