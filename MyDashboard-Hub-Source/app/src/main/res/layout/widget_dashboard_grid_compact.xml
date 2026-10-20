@@ -1,0 +1,14 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widgetRoot" android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="horizontal" android:gravity="center_vertical" android:padding="5dp" android:background="@drawable/glass_card">
+    <TextView android:id="@+id/timeText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="09:41" android:textColor="#FFFFFF" android:textSize="22sp" android:textStyle="bold" android:paddingEnd="6dp"/>
+    <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center_vertical">
+        <TextView android:id="@+id/dateText" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="TUE · 20 OCT" android:textColor="#FFFFFF" android:textSize="9sp"/>
+        <TextView android:id="@+id/batteryText" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Battery · 52%" android:textColor="#FFFFFF" android:textSize="10sp"/>
+        <TextView android:id="@+id/ageText" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Age · 5145 days" android:textColor="#C8C8C8" android:textSize="9sp"/>
+        <TextView android:id="@+id/countdownText" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Countdown · 42 days" android:textColor="#C8C8C8" android:textSize="9sp"/>
+    </LinearLayout>
+    <TextView android:id="@+id/weatherText" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" android:text="Weather"/>
+    <TextView android:id="@+id/chatgptText" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" android:text="ChatGPT"/>
+    <TextView android:id="@+id/geminiText" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" android:text="Gemini"/>
+</LinearLayout>
