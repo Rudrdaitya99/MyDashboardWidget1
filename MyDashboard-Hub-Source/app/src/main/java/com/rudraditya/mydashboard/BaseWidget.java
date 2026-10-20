@@ -100,7 +100,7 @@ abstract class BaseWidget extends AppWidgetProvider {
 
             int accent = Color.WHITE;
             int transparency = p.getInt("transparency", 20);
-            boolean snowRidge = selectedStyle == 1 || (k.equals("clock") && selectedStyle == 2);
+            boolean snowRidge = (selectedStyle == 1 && !k.equals("clock")) || (k.equals("clock") && selectedStyle == 2);
             if (snowRidge) {
                 try {
                     android.graphics.Bitmap mountain = ThemeAssets.widgetPhoto(c);
