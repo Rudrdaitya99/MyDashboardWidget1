@@ -50,6 +50,12 @@ public class MainActivity extends Activity {
         super.onCreate(state);
         prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         buildScreen();
+        ThemeAssets.prefetchWallpapers(this, () -> {
+            if (!isFinishing()) {
+                recreate();
+                DashboardRefresh.refresh(this);
+            }
+        });
     }
 
     private void buildScreen() {
@@ -63,9 +69,10 @@ public class MainActivity extends Activity {
         setContentView(scroll);
 
         LinearLayout hero = row();
-        TextView mark = text("◈", 27, white, true);
-        mark.setGravity(Gravity.CENTER);
-        mark.setBackground(shape(Color.WHITE, 0xFF111111, 18));
+        ImageView mark = new ImageView(this);
+        mark.setImageResource(R.drawable.app_icon);
+        mark.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        mark.setContentDescription("My Dashboard M mountain logo");
         hero.addView(mark, new LinearLayout.LayoutParams(dp(54), dp(54)));
         LinearLayout heroText = column();
         heroText.setPadding(dp(12), 0, 0, 0);
@@ -80,17 +87,17 @@ public class MainActivity extends Activity {
         space(root, 16);
 
         addGallery("Dashboard Hub", "dashboard", DashboardWidget.class,
-                new String[]{"Black Glass", "Snow Ridge"});
+                new String[]{"Quick Panel", "Snow Ridge", "Stats Grid"});
         addGallery("Clock & Date", "clock", ClockWidget.class,
-                new String[]{"Black Glass", "Snow Ridge"});
+                new String[]{"Digital Clock", "Snow Ridge Digital", "Analog Clock"});
         addGallery("Battery", "battery", BatteryWidget.class,
-                new String[]{"Black Glass", "Snow Ridge"});
+                new String[]{"Minimal Battery", "Snow Ridge Battery", "Circular Meter"});
         addGallery("Age Counter", "age", AgeWidget.class,
-                new String[]{"Black Glass", "Snow Ridge"});
+                new String[]{"Days Count", "Snow Ridge Age", "Milestone Ring"});
         addGallery("Countdown", "countdown", CountdownWidget.class,
-                new String[]{"Black Glass", "Snow Ridge"});
+                new String[]{"Simple Countdown", "Snow Ridge Countdown", "Circular Timer"});
         addGallery("AI Folder", "ai", AIFolderWidget.class,
-                new String[]{"Black Glass", "Snow Ridge"});
+                new String[]{"Shortcut Pills", "Snow Ridge AI", "Icon Grid"});
 
         addWallpaperSection();
 
@@ -244,28 +251,32 @@ public class MainActivity extends Activity {
 
     private View preview(String key, int style, int size) {
         boolean large = size == 2;
+        boolean compact = size == 0;
         int layout;
         if (key.equals("dashboard")) {
-            layout = large ? (style == 0 ? R.layout.widget_dashboard : R.layout.widget_dashboard_snow)
-                    : (style == 0 ? R.layout.widget_dashboard_compact : R.layout.widget_dashboard_compact_snow);
+            if (style == 2) layout = compact ? R.layout.widget_dashboard_grid_compact : R.layout.widget_dashboard_grid;
+            else if (style == 1) layout = large ? R.layout.widget_dashboard_snow : R.layout.widget_dashboard_compact_snow;
+            else layout = large ? R.layout.widget_dashboard : R.layout.widget_dashboard_compact;
         } else if (key.equals("clock")) {
-            layout = large ? (style == 0 ? R.layout.widget_clock : R.layout.widget_clock_snow)
-                    : (style == 0 ? R.layout.widget_clock_compact : R.layout.widget_clock_compact_snow);
+            if (style == 2) layout = compact ? R.layout.widget_clock_analog_compact : R.layout.widget_clock_analog;
+            else if (style == 1) layout = compact ? R.layout.widget_clock_compact_snow : R.layout.widget_clock_snow;
+            else layout = compact ? R.layout.widget_clock_compact : R.layout.widget_clock;
         } else if (key.equals("battery")) {
-            layout = large ? (style == 0 ? R.layout.widget_battery : R.layout.widget_battery_snow)
-                    : (style == 0 ? R.layout.widget_battery_compact
-                    : (size == 0 ? R.layout.widget_battery_compact_snow : R.layout.widget_battery_snow));
+            if (style == 2) layout = compact ? R.layout.widget_battery_ring_compact : R.layout.widget_battery_ring;
+            else if (style == 1) layout = compact ? R.layout.widget_battery_compact_snow : R.layout.widget_battery_snow;
+            else layout = compact ? R.layout.widget_battery_compact : R.layout.widget_battery;
         } else if (key.equals("age")) {
-            layout = large ? (style == 0 ? R.layout.widget_age : R.layout.widget_age_snow)
-                    : (style == 0 ? R.layout.widget_age_compact
-                    : (size == 0 ? R.layout.widget_age_compact_snow : R.layout.widget_age_snow));
+            if (style == 2) layout = compact ? R.layout.widget_age_milestone_compact : R.layout.widget_age_milestone;
+            else if (style == 1) layout = compact ? R.layout.widget_age_compact_snow : R.layout.widget_age_snow;
+            else layout = compact ? R.layout.widget_age_compact : R.layout.widget_age;
         } else if (key.equals("countdown")) {
-            layout = large ? (style == 0 ? R.layout.widget_countdown : R.layout.widget_countdown_snow)
-                    : (style == 0 ? R.layout.widget_countdown_compact
-                    : (size == 0 ? R.layout.widget_countdown_compact_snow : R.layout.widget_countdown_snow));
+            if (style == 2) layout = compact ? R.layout.widget_countdown_circular_compact : R.layout.widget_countdown_circular;
+            else if (style == 1) layout = compact ? R.layout.widget_countdown_compact_snow : R.layout.widget_countdown_snow;
+            else layout = compact ? R.layout.widget_countdown_compact : R.layout.widget_countdown;
         } else {
-            layout = large ? (style == 0 ? R.layout.widget_ai : R.layout.widget_ai_snow)
-                    : (style == 0 ? R.layout.widget_ai_compact : R.layout.widget_ai_snow);
+            if (style == 2) layout = compact ? R.layout.widget_ai_grid_compact : R.layout.widget_ai_grid;
+            else if (style == 1) layout = compact ? R.layout.widget_ai_compact : R.layout.widget_ai_snow;
+            else layout = compact ? R.layout.widget_ai_compact : R.layout.widget_ai;
         }
 
         View actual = LayoutInflater.from(this).inflate(layout, null, false);
@@ -274,9 +285,17 @@ public class MainActivity extends Activity {
         setPreviewText(actual, R.id.timeText, now);
         setPreviewText(actual, R.id.dateText, date);
         setPreviewText(actual, R.id.batteryText, "Battery · 52%");
+        setPreviewText(actual, R.id.batteryPercentText, "52%");
+        setPreviewText(actual, R.id.batteryLabelText, "BATTERY");
         setPreviewText(actual, R.id.ageText, "Age · " + previewAge() + " days");
+        setPreviewText(actual, R.id.ageNumberText, String.valueOf(previewAge()));
+        setPreviewText(actual, R.id.ageLabelText, "DAYS ALIVE");
         setPreviewText(actual, R.id.countdownText, "Countdown · 42 days left");
+        setPreviewText(actual, R.id.countdownNumberText, "42");
+        setPreviewText(actual, R.id.countdownLabelText, "DAYS LEFT");
         setPreviewText(actual, R.id.weatherText, "Weather · 24°");
+        setPreviewText(actual, R.id.chatgptText, "✳ ChatGPT");
+        setPreviewText(actual, R.id.geminiText, "✦ Gemini");
 
         if (style == 1) {
             ImageView mountain = actual.findViewById(R.id.mountainBackground);
@@ -287,20 +306,22 @@ public class MainActivity extends Activity {
             View card = actual.findViewById(R.id.widgetRoot);
             if (card != null) card.setBackgroundResource(ThemeAssets.widgetOverlay(this));
         }
-        float textScale = size == 0 ? 0.78f : size == 1 ? 1.0f : 1.24f;
+
+        float textScale = size == 0 ? 0.82f : size == 1 ? 1.0f : 1.14f;
         scalePreviewText(actual, R.id.timeText, textScale);
         scalePreviewText(actual, R.id.dateText, textScale);
         scalePreviewText(actual, R.id.batteryText, textScale);
+        scalePreviewText(actual, R.id.batteryPercentText, textScale);
+        scalePreviewText(actual, R.id.batteryLabelText, textScale);
         scalePreviewText(actual, R.id.ageText, textScale);
+        scalePreviewText(actual, R.id.ageNumberText, textScale);
+        scalePreviewText(actual, R.id.ageLabelText, textScale);
         scalePreviewText(actual, R.id.countdownText, textScale);
+        scalePreviewText(actual, R.id.countdownNumberText, textScale);
+        scalePreviewText(actual, R.id.countdownLabelText, textScale);
         scalePreviewText(actual, R.id.chatgptText, textScale);
         scalePreviewText(actual, R.id.geminiText, textScale);
         return actual;
-    }
-
-    private void scalePreviewText(View parent, int id, float factor) {
-        TextView view = parent.findViewById(id);
-        if (view != null) view.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, view.getTextSize() * factor);
     }
 
     private void setPreviewText(View parent, int id, String value) {
@@ -319,18 +340,50 @@ public class MainActivity extends Activity {
     }
 
     private void addWallpaperSection() {
-        root.addView(text("WALLPAPER", 11, muted, true));
-        root.addView(text("Real mountain photography · matched to Snow Ridge widgets", 13, white, false));
+        root.addView(text("WALLPAPER GALLERY", 11, muted, true));
+        root.addView(text("Three distinct high-resolution mountain photographs", 13, white, false));
         LinearLayout p = panel();
+        int selected = prefs.getInt("wallpaper_style", 0);
         ImageView image = new ImageView(this);
-        wallpaperPreview = makeWallpaper();
+        wallpaperPreview = makeWallpaper(selected);
         image.setImageBitmap(wallpaperPreview);
-        image.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        image.setBackground(shape(Color.BLACK, Color.rgb(180,180,180), 16));
+        image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        image.setBackground(shape(Color.BLACK, Color.rgb(210,210,210), 16));
         image.setClipToOutline(true);
-        LinearLayout.LayoutParams wallpaperSize = new LinearLayout.LayoutParams(dp(240), dp(460));
+        LinearLayout.LayoutParams wallpaperSize = new LinearLayout.LayoutParams(dp(240), dp(440));
         wallpaperSize.gravity = Gravity.CENTER_HORIZONTAL;
         p.addView(image, wallpaperSize);
+
+        String[] wallpaperNames = {"Snow Ridge", "Moonlit Summit", "Alpine Lake"};
+        TextView[] choices = new TextView[wallpaperNames.length];
+        LinearLayout row = row();
+        LinearLayout.LayoutParams rowParams = new LinearLayout.LayoutParams(-1, dp(44));
+        rowParams.topMargin = dp(10);
+        p.addView(row, rowParams);
+        for (int index = 0; index < wallpaperNames.length; index++) {
+            final int chosen = index;
+            TextView option = text(wallpaperNames[index], 10, index == selected ? Color.BLACK : white, true);
+            option.setGravity(Gravity.CENTER);
+            option.setBackground(shape(index == selected ? Color.WHITE : 0xFF242424,
+                    index == selected ? Color.WHITE : 0x99FFFFFF, 12));
+            LinearLayout.LayoutParams optionParams = new LinearLayout.LayoutParams(0, dp(42), 1);
+            if (index > 0) optionParams.setMargins(dp(5), 0, 0, 0);
+            row.addView(option, optionParams);
+            choices[index] = option;
+            option.setOnClickListener(v -> {
+                prefs.edit().putInt("wallpaper_style", chosen).apply();
+                wallpaperPreview = makeWallpaper(chosen);
+                image.setImageBitmap(wallpaperPreview);
+                for (int i = 0; i < choices.length; i++) {
+                    boolean active = i == chosen;
+                    choices[i].setTextColor(active ? Color.BLACK : white);
+                    choices[i].setBackground(shape(active ? Color.WHITE : 0xFF242424,
+                            active ? Color.WHITE : 0x99FFFFFF, 12));
+                }
+                DashboardRefresh.refresh(this);
+            });
+        }
+
         TextView apply = action("SET AS WALLPAPER");
         LinearLayout.LayoutParams ap = new LinearLayout.LayoutParams(-1, dp(46));
         ap.topMargin = dp(10);
@@ -339,15 +392,19 @@ public class MainActivity extends Activity {
         apply.setOnClickListener(v -> {
             try {
                 WallpaperManager.getInstance(this).setBitmap(wallpaperPreview);
-                Toast.makeText(this, "Monochrome wallpaper applied", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Wallpaper applied", Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
                 Toast.makeText(this, "Could not set wallpaper. Check Android wallpaper permission.", Toast.LENGTH_LONG).show();
             }
         });
+        TextView credit = text("Photographs are downloaded once and cached for offline reuse. Images: Unsplash.", 10, muted, false);
+        LinearLayout.LayoutParams creditParams = new LinearLayout.LayoutParams(-1, -2);
+        creditParams.topMargin = dp(6);
+        p.addView(credit, creditParams);
     }
 
-    private Bitmap makeWallpaper() {
-        return ThemeAssets.wallpaperPhoto(this);
+    private Bitmap makeWallpaper(int style) {
+        return ThemeAssets.wallpaperPhoto(this, style);
     }
 
     private void applyDesign(String key, int style, int size, Class<?> provider, String title, String design) {
