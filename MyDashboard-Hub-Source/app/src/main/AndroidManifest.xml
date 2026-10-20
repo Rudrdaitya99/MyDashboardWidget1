@@ -4,6 +4,7 @@
     <queries>
         <package android:name="com.openai.chatgpt" />
         <package android:name="com.google.android.apps.bard" />
+        <package android:name="com.google.android.apps.gemini" />
     </queries>
     <application android:allowBackup="false" android:label="My Dashboard"
         android:icon="@drawable/app_icon" android:roundIcon="@drawable/app_icon"
