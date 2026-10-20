@@ -1,0 +1,9 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widgetRoot" android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="horizontal" android:gravity="center_vertical" android:padding="6dp" android:background="@drawable/glass_card">
+    <TextView android:id="@+id/timeText" android:layout_width="wrap_content" android:layout_height="match_parent" android:gravity="center_vertical" android:text="12:45" android:textColor="#FFFFFF" android:textSize="26sp" android:singleLine="true" android:paddingHorizontal="7dp"/>
+    <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center_vertical" android:paddingStart="8dp">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="TIMELESS" android:textColor="#B8B8B8" android:textSize="8sp" android:textStyle="bold" android:letterSpacing="0.15"/>
+        <TextView android:id="@+id/dateText" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="TUE · 20 OCT" android:textColor="#FFFFFF" android:textSize="11sp" android:singleLine="true" android:ellipsize="end"/>
+    </LinearLayout>
+</LinearLayout>
