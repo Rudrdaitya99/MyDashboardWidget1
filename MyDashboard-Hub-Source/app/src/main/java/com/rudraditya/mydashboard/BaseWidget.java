@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.os.BatteryManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.graphics.Color;
 import android.widget.RemoteViews;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,19 +21,22 @@ abstract class BaseWidget extends AppWidgetProvider {
     abstract int layoutId();
     abstract String kind();
 
-    int layoutId(Context c, AppWidgetManager m, int id) {
-        return layoutId();
-    }
+    int layoutId(Context c, AppWidgetManager m, int id) { return layoutId(); }
 
     @Override public void onUpdate(Context c, AppWidgetManager m, int[] ids) {
+        SharedPreferences p = c.getSharedPreferences(MainActivity.PREFS, Context.MODE_PRIVATE);
+        String k = kind();
         for (int id : ids) {
+            if (!p.getBoolean("enabled_" + k, true)) {
+                RemoteViews paused = new RemoteViews(c.getPackageName(), R.layout.widget_disabled);
+                paused.setTextViewText(R.id.disabledTitle, k.toUpperCase(Locale.ROOT) + " PAUSED");
+                m.updateAppWidget(id, paused);
+                continue;
+            }
             RemoteViews v = new RemoteViews(c.getPackageName(), layoutId(c, m, id));
-            SharedPreferences p = c.getSharedPreferences(MainActivity.PREFS, Context.MODE_PRIVATE);
             String time = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
             String date = new SimpleDateFormat("EEE · d MMM", Locale.getDefault()).format(new Date());
             int level = battery(c);
-            String k = kind();
-
             if (k.equals("dashboard") || k.equals("clock")) {
                 v.setTextViewText(R.id.timeText, time);
                 v.setTextViewText(R.id.dateText, date);
@@ -40,19 +44,25 @@ abstract class BaseWidget extends AppWidgetProvider {
             if (k.equals("dashboard") || k.equals("battery")) {
                 v.setTextViewText(R.id.batteryText, "Battery · " + (level < 0 ? "--" : level + "%"));
             }
-            if (k.equals("dashboard") || k.equals("age")) {
-                v.setTextViewText(R.id.ageText, age(p.getString("birth", "")));
-            }
-            if (k.equals("dashboard") || k.equals("countdown")) {
-                v.setTextViewText(R.id.countdownText, countdown(p.getString("target", "")));
-            }
-            if (k.equals("dashboard")) {
-                v.setTextViewText(R.id.weatherText, "Weather · coming in a later update");
-            }
+            if (k.equals("dashboard") || k.equals("age")) v.setTextViewText(R.id.ageText, age(p.getString("birth", "")));
+            if (k.equals("dashboard") || k.equals("countdown")) v.setTextViewText(R.id.countdownText, countdown(p.getString("target", "")));
+            if (k.equals("dashboard")) v.setTextViewText(R.id.weatherText, "Weather · coming in a later update");
             if (k.equals("dashboard") || k.equals("ai")) {
                 setAppLink(v, c, id, R.id.chatgptText, "com.openai.chatgpt", "https://chatgpt.com");
                 setAppLink(v, c, id, R.id.geminiText, "com.google.android.apps.bard", "https://gemini.google.com");
             }
+            int accent = p.getInt("accent", Color.rgb(189, 178, 255));
+            int opacity = p.getInt("opacity", 85);
+            int alpha = Math.max(0, Math.min(255, Math.round(opacity * 2.55f)));
+            try { v.setTextColor(R.id.timeText, Color.WHITE); } catch (Exception ignored) {}
+            int[] accentIds = { R.id.disabledTitle };
+            try { v.setTextColor(R.id.disabledTitle, accent); } catch (Exception ignored) {}
+            int[] labelIds = { R.id.weatherText, R.id.ageText, R.id.countdownText };
+            for (int viewId : labelIds) { try { v.setTextColor(viewId, Color.WHITE); } catch (Exception ignored) {} }
+            try { v.setInt(R.id.widgetRoot, "setBackgroundColor", Color.argb(alpha, 18, 22, 35)); } catch (Exception ignored) {}
+            try { v.setTextColor(R.id.timeText, accent); } catch (Exception ignored) {}
+            try { v.setTextColor(R.id.chatgptText, accent); } catch (Exception ignored) {}
+            try { v.setTextColor(R.id.geminiText, accent); } catch (Exception ignored) {}
             m.updateAppWidget(id, v);
         }
     }
@@ -64,41 +74,31 @@ abstract class BaseWidget extends AppWidgetProvider {
     private int battery(Context c) {
         Intent i = c.registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         if (i == null) return -1;
-        int l = i.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-        int s = i.getIntExtra(BatteryManager.EXTRA_SCALE, 100);
+        int l = i.getIntExtra(BatteryManager.EXTRA_LEVEL, -1), s = i.getIntExtra(BatteryManager.EXTRA_SCALE, 100);
         return l >= 0 && s > 0 ? Math.round(l * 100f / s) : -1;
     }
-
     private String age(String b) {
         if (b.isEmpty()) return "Age · set birthday in app";
         long n = days(b, new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(new Date()));
         return n >= 0 ? "Age · " + n + " days" : "Check birthday date";
     }
-
     private String countdown(String t) {
         if (t.isEmpty()) return "Countdown · set target in app";
         long n = days(new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(new Date()), t);
         return n > 0 ? "Countdown · " + n + " days left" : n == 0 ? "Countdown · today!" : "Countdown · date passed";
     }
-
     private long days(String a, String b) {
         try {
             SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
             f.setLenient(false);
             return TimeUnit.MILLISECONDS.toDays(f.parse(b).getTime() - f.parse(a).getTime());
-        } catch (Exception e) {
-            return -1;
-        }
+        } catch (Exception e) { return -1; }
     }
-
     private void setAppLink(RemoteViews v, Context c, int id, int viewId, String packageName, String url) {
         Intent i = c.getPackageManager().getLaunchIntentForPackage(packageName);
-        if (i == null) {
-            i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        }
-        PendingIntent p = PendingIntent.getActivity(
-                c, id + viewId, i,
-                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        if (i == null) i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        PendingIntent p = PendingIntent.getActivity(c, id + viewId, i,
+            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         v.setOnClickPendingIntent(viewId, p);
     }
 }
