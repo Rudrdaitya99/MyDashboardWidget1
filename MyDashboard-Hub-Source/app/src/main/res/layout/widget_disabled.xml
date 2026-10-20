@@ -1,0 +1,14 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widgetRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_vertical"
+    android:padding="10dp"
+    android:background="@drawable/glass_card">
+    <TextView android:id="@+id/disabledTitle" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="WIDGET PAUSED" android:textColor="#BDB2FF" android:textStyle="bold" android:textSize="11sp"/>
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="Enable it in My Dashboard settings" android:textColor="#FFFFFF" android:textSize="12sp"
+        android:layout_marginTop="4dp"/>
+</LinearLayout>
