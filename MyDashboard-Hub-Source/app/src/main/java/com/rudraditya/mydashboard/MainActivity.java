@@ -80,17 +80,17 @@ public class MainActivity extends Activity {
         space(root, 16);
 
         addGallery("Dashboard Hub", "dashboard", DashboardWidget.class,
-                new String[]{"Essential", "Mono Glass"});
+                new String[]{"Black Glass", "White Ridge"});
         addGallery("Clock & Date", "clock", ClockWidget.class,
-                new String[]{"Classic", "Timeless"});
+                new String[]{"Black Glass", "White Ridge Clock"});
         addGallery("Battery", "battery", BatteryWidget.class,
-                new String[]{"Simple", "Battery Bar"});
+                new String[]{"Black Glass", "White Ridge Battery"});
         addGallery("Age Counter", "age", AgeWidget.class,
-                new String[]{"Counter", "Minimal"});
+                new String[]{"Black Glass", "White Ridge Counter"});
         addGallery("Countdown", "countdown", CountdownWidget.class,
                 new String[]{"Counter", "Minimal"});
         addGallery("AI Folder", "ai", AIFolderWidget.class,
-                new String[]{"List", "Split Glass"});
+                new String[]{"Black Glass", "White Ridge AI"});
 
         addWallpaperSection();
 
