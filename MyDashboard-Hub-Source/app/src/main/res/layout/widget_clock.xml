@@ -1,15 +1,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent" android:layout_height="match_parent"
-        android:orientation="vertical" android:padding="14dp" android:background="@drawable/glass_card">
-        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="CLOCK" android:textColor="#BDB2FF" android:textSize="10sp"
-            android:textStyle="bold" android:letterSpacing="0.1"/>
-        <TextView android:id="@+id/timeText" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:text="09:41" android:textColor="#FFFFFF"
-            android:textSize="38sp" android:layout_marginTop="5dp" android:background="@drawable/glass_button"
-            android:padding="5dp"/>
-        <TextView android:id="@+id/dateText" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:text="MON · 18 OCT" android:textColor="#FFFFFF"
-            android:textSize="12sp" android:layout_marginTop="5dp" android:background="@drawable/glass_button"
-            android:padding="5dp"/>
-    </LinearLayout>
+    android:id="@+id/widgetRoot" android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:padding="8dp" android:background="@drawable/glass_card">
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="CLOCK"
+        android:textColor="#BDB2FF" android:textSize="10sp" android:textStyle="bold"/>
+    <TextView android:id="@+id/timeText" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="09:41" android:textColor="#FFFFFF" android:textSize="32sp" android:layout_marginTop="3dp"
+        android:background="@drawable/glass_button" android:padding="4dp"/>
+    <TextView android:id="@+id/dateText" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="MON · 18 OCT" android:textColor="#FFFFFF" android:textSize="12sp" android:layout_marginTop="4dp"
+        android:background="@drawable/glass_button" android:padding="4dp"/>
+</LinearLayout>
