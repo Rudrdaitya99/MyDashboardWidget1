@@ -51,7 +51,7 @@ abstract class BaseWidget extends AppWidgetProvider {
                 setAppLink(v, c, id, R.id.chatgptText, "com.openai.chatgpt", "https://chatgpt.com");
                 setAppLink(v, c, id, R.id.geminiText, "com.google.android.apps.bard", "https://gemini.google.com");
             }
-            int accent = p.getInt("accent", Color.WHITE);
+            int accent = Color.WHITE;
             int transparency = p.getInt("transparency", 20);
             int background = transparency >= 70 ? R.drawable.glass_card_80
                     : transparency >= 50 ? R.drawable.glass_card_60
