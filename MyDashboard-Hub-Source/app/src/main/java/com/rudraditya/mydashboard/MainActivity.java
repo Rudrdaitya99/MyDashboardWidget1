@@ -13,6 +13,10 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Shader;
 import android.graphics.LinearGradient;
+import android.graphics.Rect;
+import android.graphics.ColorFilter;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
 import android.app.WallpaperManager;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
@@ -51,7 +55,7 @@ public class MainActivity extends Activity {
     private void buildScreen() {
         ScrollView scroll = new ScrollView(this);
         scroll.setFillViewport(true);
-        scroll.setBackgroundColor(Color.rgb(10,10,10));
+        scroll.setBackground(new WaveBackground());
         root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
         root.setPadding(dp(18), dp(20), dp(18), dp(28));
@@ -154,38 +158,45 @@ public class MainActivity extends Activity {
 
     private void addGallery(String title, String key, Class<?> provider, String[] names) {
         LinearLayout section = column();
-        TextView heading = text(title, 17, white, true);
+        TextView heading = text(title, 18, white, true);
         section.addView(heading);
-        TextView sub = text("TAP A DESIGN TO APPLY", 9, muted, true);
-        section.addView(sub);
-        LinearLayout choices = row();
-        choices.setGravity(Gravity.TOP);
-        for (int style = 0; style < 2; style++) {
+        TextView sub = text("CHOOSE A STYLE", 10, muted, true);
+        LinearLayout.LayoutParams subp = new LinearLayout.LayoutParams(-1, -2);
+        subp.topMargin = dp(3);
+        section.addView(sub, subp);
+
+        for (int style = 0; style < names.length; style++) {
             final int chosenStyle = style;
             LinearLayout choice = column();
-            choice.setPadding(dp(9), dp(9), dp(9), dp(9));
-            choice.setBackground(shape(cardColor, borderColor, 16));
-            LinearLayout.LayoutParams cp = new LinearLayout.LayoutParams(0, -2, 1);
-            cp.setMargins(style == 0 ? 0 : dp(7), dp(8), style == 0 ? dp(3) : 0, 0);
-            choices.addView(choice, cp);
-            choice.addView(preview(key, style));
-            TextView label = text(names[style], 12, white, true);
-            label.setGravity(Gravity.CENTER);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1, -2);
-            lp.topMargin = dp(8);
-            choice.addView(label, lp);
-            TextView use = text("USE DESIGN  ↗", 9, white, true);
-            use.setGravity(Gravity.CENTER);
-            use.setPadding(dp(4), dp(9), dp(4), dp(9));
-            use.setBackground(shape(Color.rgb(29,29,29), Color.rgb(92,92,92), 10));
-            LinearLayout.LayoutParams up = new LinearLayout.LayoutParams(-1, -2);
-            up.topMargin = dp(8);
+            choice.setPadding(dp(12), dp(12), dp(12), dp(12));
+            choice.setBackground(shape(0xCC171717, 0x88FFFFFF, 18));
+            LinearLayout.LayoutParams cp = new LinearLayout.LayoutParams(-1, -2);
+            cp.topMargin = dp(10);
+            section.addView(choice, cp);
+
+            LinearLayout titleRow = row();
+            titleRow.setGravity(Gravity.CENTER_VERTICAL);
+            titleRow.addView(text(names[style], 14, white, true),
+                    new LinearLayout.LayoutParams(0, -2, 1));
+            TextView chip = text(style == 0 ? "01" : "02", 10, muted, true);
+            chip.setGravity(Gravity.CENTER);
+            chip.setBackground(shape(0xFF292929, 0x77FFFFFF, 20));
+            titleRow.addView(chip, new LinearLayout.LayoutParams(dp(34), dp(25)));
+            choice.addView(titleRow);
+
+            View sample = preview(key, style);
+            LinearLayout.LayoutParams samplep = new LinearLayout.LayoutParams(-1, dp(68));
+            samplep.topMargin = dp(10);
+            choice.addView(sample, samplep);
+
+            TextView use = action("APPLY THIS DESIGN  ↗");
+            LinearLayout.LayoutParams up = new LinearLayout.LayoutParams(-1, dp(42));
+            up.topMargin = dp(10);
             choice.addView(use, up);
             choice.setOnClickListener(v -> applyDesign(key, chosenStyle, provider, title, names[chosenStyle]));
         }
-        section.addView(choices);
         LinearLayout.LayoutParams sp = new LinearLayout.LayoutParams(-1, -2);
-        sp.topMargin = dp(17);
+        sp.topMargin = dp(20);
         root.addView(section, sp);
     }
 
@@ -193,9 +204,9 @@ public class MainActivity extends Activity {
         int layout;
         if (key.equals("dashboard")) layout = style == 0 ? R.layout.widget_dashboard_compact : R.layout.widget_dashboard_compact_mono;
         else if (key.equals("clock")) layout = style == 0 ? R.layout.widget_clock_compact : R.layout.widget_clock_compact_mono;
-        else if (key.equals("battery")) layout = style == 0 ? R.layout.widget_battery : R.layout.widget_battery_mono;
-        else if (key.equals("age")) layout = style == 0 ? R.layout.widget_age : R.layout.widget_age_mono;
-        else if (key.equals("countdown")) layout = style == 0 ? R.layout.widget_countdown : R.layout.widget_countdown_mono;
+        else if (key.equals("battery")) layout = style == 0 ? R.layout.widget_battery_compact : R.layout.widget_battery_mono;
+        else if (key.equals("age")) layout = style == 0 ? R.layout.widget_age_compact : R.layout.widget_age_mono;
+        else if (key.equals("countdown")) layout = style == 0 ? R.layout.widget_countdown_compact : R.layout.widget_countdown_mono;
         else layout = style == 0 ? R.layout.widget_ai_compact : R.layout.widget_ai_mono;
 
         View actual = LayoutInflater.from(this).inflate(layout, null, false);
@@ -348,6 +359,38 @@ public class MainActivity extends Activity {
             }
         }
     }
+    private static class WaveBackground extends Drawable {
+        private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        @Override public void draw(Canvas canvas) {
+            Rect bounds = getBounds();
+            float w = bounds.width(), h = bounds.height();
+            canvas.save();
+            canvas.translate(bounds.left, bounds.top);
+            paint.setShader(new LinearGradient(0, 0, w * 0.85f, h, new int[]{0xFF191919, 0xFF101010, 0xFF242424, 0xFF0B0B0B}, null, Shader.TileMode.CLAMP));
+            canvas.drawRect(0, 0, w, h, paint);
+            paint.setShader(null);
+            paint.setStyle(Paint.Style.STROKE);
+            for (int i = 0; i < 10; i++) {
+                paint.setStrokeWidth(i % 3 == 0 ? 1.5f : 0.8f);
+                paint.setColor(Color.argb(i % 3 == 0 ? 75 : 28, 255, 255, 255));
+                Path wave = new Path();
+                float offset = h * (0.22f + i * 0.035f);
+                wave.moveTo(-w * 0.1f, offset);
+                wave.cubicTo(w * 0.20f, offset - h * 0.14f, w * 0.43f, offset + h * 0.12f, w * 0.66f, offset - h * 0.02f);
+                wave.cubicTo(w * 0.82f, offset - h * 0.10f, w * 0.92f, offset + h * 0.12f, w * 1.1f, offset + h * 0.02f);
+                canvas.drawPath(wave, paint);
+            }
+            paint.setStrokeWidth(1.4f);
+            paint.setColor(0x44FFFFFF);
+            canvas.drawCircle(w * 0.78f, h * 0.77f, Math.min(w, h) * 0.22f, paint);
+            paint.setStyle(Paint.Style.FILL);
+            canvas.restore();
+        }
+        @Override public void setAlpha(int alpha) {}
+        @Override public void setColorFilter(ColorFilter colorFilter) {}
+        @Override public int getOpacity() { return PixelFormat.OPAQUE; }
+    }
+
     private boolean validDate(String s) {
         if (s.isEmpty()) return true;
         try {
