@@ -9,7 +9,7 @@ public class DashboardWidget extends BaseWidget {
     @Override int layoutId(Context c, AppWidgetManager m, int id) {
         Bundle options = m.getAppWidgetOptions(id);
         int minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, 0);
-        return minHeight > 110 ? R.layout.widget_dashboard : R.layout.widget_dashboard_compact;
+        return minHeight >= 110 ? R.layout.widget_dashboard : R.layout.widget_dashboard_compact;
     }
 
     @Override String kind() { return "dashboard"; }
