@@ -80,17 +80,17 @@ public class MainActivity extends Activity {
         space(root, 16);
 
         addGallery("Dashboard Hub", "dashboard", DashboardWidget.class,
-                new String[]{"Black Glass", "White Ridge"});
+                new String[]{"Black Glass", "Snow Ridge"});
         addGallery("Clock & Date", "clock", ClockWidget.class,
-                new String[]{"Black Glass", "White Ridge Clock"});
+                new String[]{"Black Glass", "Snow Ridge"});
         addGallery("Battery", "battery", BatteryWidget.class,
-                new String[]{"Black Glass", "White Ridge Battery"});
+                new String[]{"Black Glass", "Snow Ridge"});
         addGallery("Age Counter", "age", AgeWidget.class,
-                new String[]{"Black Glass", "White Ridge Counter"});
+                new String[]{"Black Glass", "Snow Ridge"});
         addGallery("Countdown", "countdown", CountdownWidget.class,
                 new String[]{"Black Glass", "Snow Ridge Countdown"});
         addGallery("AI Folder", "ai", AIFolderWidget.class,
-                new String[]{"Black Glass", "White Ridge AI"});
+                new String[]{"Black Glass", "Snow Ridge"});
 
         addWallpaperSection();
 
@@ -158,18 +158,17 @@ public class MainActivity extends Activity {
 
     private void addGallery(String title, String key, Class<?> provider, String[] names) {
         LinearLayout section = column();
-        TextView heading = text(title, 18, white, true);
-        section.addView(heading);
-        TextView sub = text("CHOOSE A STYLE", 10, muted, true);
+        section.addView(text(title, 18, white, true));
         LinearLayout.LayoutParams subp = new LinearLayout.LayoutParams(-1, -2);
         subp.topMargin = dp(3);
-        section.addView(sub, subp);
+        section.addView(text("TWO DISTINCT STYLES · PREVIEW BEFORE APPLY", 9, muted, true), subp);
 
         for (int style = 0; style < names.length; style++) {
             final int chosenStyle = style;
+            final int[] chosenSize = {1}; // default preview is 3x1
             LinearLayout choice = column();
             choice.setPadding(dp(12), dp(12), dp(12), dp(12));
-            choice.setBackground(shape(0xCC171717, 0x88FFFFFF, 18));
+            choice.setBackground(shape(0xD91A1A1A, 0xAAFFFFFF, 18));
             LinearLayout.LayoutParams cp = new LinearLayout.LayoutParams(-1, -2);
             cp.topMargin = dp(10);
             section.addView(choice, cp);
@@ -178,39 +177,95 @@ public class MainActivity extends Activity {
             titleRow.setGravity(Gravity.CENTER_VERTICAL);
             titleRow.addView(text(names[style], 14, white, true),
                     new LinearLayout.LayoutParams(0, -2, 1));
-            TextView chip = text(style == 0 ? "01" : "02", 10, muted, true);
+            TextView chip = text(style == 0 ? "BLACK" : "PHOTO", 9, muted, true);
             chip.setGravity(Gravity.CENTER);
-            chip.setBackground(shape(0xFF292929, 0x77FFFFFF, 20));
-            titleRow.addView(chip, new LinearLayout.LayoutParams(dp(34), dp(25)));
+            chip.setBackground(shape(0xFF292929, 0x99FFFFFF, 20));
+            titleRow.addView(chip, new LinearLayout.LayoutParams(dp(58), dp(25)));
             choice.addView(titleRow);
 
-            View sample = preview(key, style);
-            LinearLayout.LayoutParams samplep = new LinearLayout.LayoutParams(-1, dp(68));
-            samplep.topMargin = dp(10);
-            choice.addView(sample, samplep);
+            LinearLayout sampleHolder = column();
+            sampleHolder.setGravity(Gravity.CENTER_HORIZONTAL);
+            LinearLayout.LayoutParams sh = new LinearLayout.LayoutParams(-1, -2);
+            sh.topMargin = dp(10);
+            choice.addView(sampleHolder, sh);
+            View sample = preview(key, chosenStyle, chosenSize[0]);
+            sampleHolder.addView(sample, previewLayoutParams(key, chosenSize[0]));
 
-            TextView use = action("APPLY THIS DESIGN  ↗");
+            LinearLayout sizeRow = row();
+            sizeRow.setGravity(Gravity.CENTER);
+            LinearLayout.LayoutParams sizeRowParams = new LinearLayout.LayoutParams(-1, dp(34));
+            sizeRowParams.topMargin = dp(8);
+            choice.addView(sizeRow, sizeRowParams);
+            TextView[] sizeChips = new TextView[3];
+            String[] sizeLabels = {"2×1", "3×1", "3×2"};
+            for (int size = 0; size < 3; size++) {
+                final int selectedSize = size;
+                TextView sizeChip = text(sizeLabels[size], 10, size == 1 ? Color.BLACK : white, true);
+                sizeChip.setGravity(Gravity.CENTER);
+                sizeChip.setBackground(shape(size == 1 ? Color.WHITE : 0xFF252525,
+                        size == 1 ? Color.WHITE : 0x88FFFFFF, 12));
+                LinearLayout.LayoutParams zp = new LinearLayout.LayoutParams(0, dp(30), 1);
+                if (size > 0) zp.setMargins(dp(5), 0, 0, 0);
+                sizeRow.addView(sizeChip, zp);
+                sizeChips[size] = sizeChip;
+                sizeChip.setOnClickListener(v -> {
+                    chosenSize[0] = selectedSize;
+                    for (int i = 0; i < sizeChips.length; i++) {
+                        boolean active = i == selectedSize;
+                        sizeChips[i].setTextColor(active ? Color.BLACK : white);
+                        sizeChips[i].setBackground(shape(active ? Color.WHITE : 0xFF252525,
+                                active ? Color.WHITE : 0x88FFFFFF, 12));
+                    }
+                    sampleHolder.removeAllViews();
+                    View updated = preview(key, chosenStyle, chosenSize[0]);
+                    sampleHolder.addView(updated, previewLayoutParams(key, chosenSize[0]));
+                });
+            }
+
+            TextView use = action("APPLY DESIGN TO HOME SCREEN  ↗");
             LinearLayout.LayoutParams up = new LinearLayout.LayoutParams(-1, dp(42));
             up.topMargin = dp(10);
             choice.addView(use, up);
-            choice.setOnClickListener(v -> applyDesign(key, chosenStyle, provider, title, names[chosenStyle]));
+            use.setOnClickListener(v -> applyDesign(key, chosenStyle, chosenSize[0],
+                    provider, title, names[chosenStyle]));
         }
         LinearLayout.LayoutParams sp = new LinearLayout.LayoutParams(-1, -2);
         sp.topMargin = dp(20);
         root.addView(section, sp);
     }
 
-    private View preview(String key, int style) {
+    private LinearLayout.LayoutParams previewLayoutParams(String key, int size) {
+        int height = size == 0 ? dp(48) : size == 1 ? dp(68) : dp(126);
+        int width = size == 0 ? dp(178) : -1;
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, height);
+        lp.gravity = Gravity.CENTER_HORIZONTAL;
+        return lp;
+    }
+
+    private View preview(String key, int style, int size) {
+        boolean large = size == 2;
         int layout;
-        if (key.equals("dashboard")) layout = style == 0 ? R.layout.widget_dashboard_compact : R.layout.widget_dashboard_compact_mono;
-        else if (key.equals("clock")) layout = style == 0 ? R.layout.widget_clock_compact : R.layout.widget_clock_compact_snow;
-        else if (key.equals("battery")) layout = style == 0 ? R.layout.widget_battery_compact : R.layout.widget_battery_snow;
-        else if (key.equals("age")) layout = style == 0 ? R.layout.widget_age_compact : R.layout.widget_age_snow;
-        else if (key.equals("countdown")) layout = style == 0 ? R.layout.widget_countdown_compact : R.layout.widget_countdown_snow;
-        else layout = style == 0 ? R.layout.widget_ai_compact : R.layout.widget_ai_snow;
+        if (key.equals("dashboard")) {
+            layout = large ? (style == 0 ? R.layout.widget_dashboard : R.layout.widget_dashboard_snow)
+                    : (style == 0 ? R.layout.widget_dashboard_compact : R.layout.widget_dashboard_compact_snow);
+        } else if (key.equals("clock")) {
+            layout = large ? (style == 0 ? R.layout.widget_clock : R.layout.widget_clock_snow)
+                    : (style == 0 ? R.layout.widget_clock_compact : R.layout.widget_clock_compact_snow);
+        } else if (key.equals("battery")) {
+            layout = large ? (style == 0 ? R.layout.widget_battery : R.layout.widget_battery_snow)
+                    : (style == 0 ? R.layout.widget_battery_compact : R.layout.widget_battery_snow);
+        } else if (key.equals("age")) {
+            layout = large ? (style == 0 ? R.layout.widget_age : R.layout.widget_age_snow)
+                    : (style == 0 ? R.layout.widget_age_compact : R.layout.widget_age_snow);
+        } else if (key.equals("countdown")) {
+            layout = large ? (style == 0 ? R.layout.widget_countdown : R.layout.widget_countdown_snow)
+                    : (style == 0 ? R.layout.widget_countdown_compact : R.layout.widget_countdown_snow);
+        } else {
+            layout = large ? (style == 0 ? R.layout.widget_ai : R.layout.widget_ai_snow)
+                    : (style == 0 ? R.layout.widget_ai_compact : R.layout.widget_ai_snow);
+        }
 
         View actual = LayoutInflater.from(this).inflate(layout, null, false);
-        actual.setLayoutParams(new LinearLayout.LayoutParams(-1, dp(key.equals("dashboard") ? 76 : 68)));
         String now = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
         String date = new SimpleDateFormat("EEE · d MMM", Locale.getDefault()).format(new Date());
         setPreviewText(actual, R.id.timeText, now);
@@ -219,6 +274,7 @@ public class MainActivity extends Activity {
         setPreviewText(actual, R.id.ageText, "Age · " + previewAge() + " days");
         setPreviewText(actual, R.id.countdownText, "Countdown · 42 days left");
         setPreviewText(actual, R.id.weatherText, "Weather · 24°");
+
         if (style == 1) {
             ImageView mountain = actual.findViewById(R.id.mountainBackground);
             if (mountain != null) {
@@ -228,7 +284,20 @@ public class MainActivity extends Activity {
             View card = actual.findViewById(R.id.widgetRoot);
             if (card != null) card.setBackgroundColor(0x99060606);
         }
+        float textScale = size == 0 ? 0.78f : size == 1 ? 1.0f : 1.24f;
+        scalePreviewText(actual, R.id.timeText, textScale);
+        scalePreviewText(actual, R.id.dateText, textScale);
+        scalePreviewText(actual, R.id.batteryText, textScale);
+        scalePreviewText(actual, R.id.ageText, textScale);
+        scalePreviewText(actual, R.id.countdownText, textScale);
+        scalePreviewText(actual, R.id.chatgptText, textScale);
+        scalePreviewText(actual, R.id.geminiText, textScale);
         return actual;
+    }
+
+    private void scalePreviewText(View parent, int id, float factor) {
+        TextView view = parent.findViewById(id);
+        if (view != null) view.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, view.getTextSize() * factor);
     }
 
     private void setPreviewText(View parent, int id, String value) {
@@ -278,18 +347,27 @@ public class MainActivity extends Activity {
         return ThemeAssets.wallpaperPhoto(this);
     }
 
-    private void applyDesign(String key, int style, Class<?> provider, String title, String design) {
+    private void applyDesign(String key, int style, int size, Class<?> provider, String title, String design) {
         prefs.edit().putInt("style_" + key, style).apply();
         DashboardRefresh.refresh(this);
         AppWidgetManager manager = AppWidgetManager.getInstance(this);
         boolean accepted = false;
         if (manager.isRequestPinAppWidgetSupported()) {
-            accepted = manager.requestPinAppWidget(new ComponentName(this, provider), null, null);
+            Bundle options = new Bundle();
+            int minWidth = size == 0 ? 110 : 170;
+            int maxWidth = size == 0 ? 130 : size == 1 ? 190 : 200;
+            int minHeight = size == 2 ? 140 : size == 1 ? 70 : 40;
+            int maxHeight = size == 2 ? 160 : size == 1 ? 85 : 50;
+            options.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, minWidth);
+            options.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH, maxWidth);
+            options.putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, minHeight);
+            options.putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, maxHeight);
+            accepted = manager.requestPinAppWidget(new ComponentName(this, provider), options, null);
         }
         if (accepted) {
-            Toast.makeText(this, design + " selected. Confirm the system prompt to add " + title + ".", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, design + " selected. Confirm Android's prompt to add " + title + ".", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(this, design + " selected and existing widgets refreshed. To add a new one, use your launcher's widget picker.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, design + " saved; existing widgets refreshed. Your launcher may require its widget picker to add a new one.", Toast.LENGTH_LONG).show();
         }
     }
 
