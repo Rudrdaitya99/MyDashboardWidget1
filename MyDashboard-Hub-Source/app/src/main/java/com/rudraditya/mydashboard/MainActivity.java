@@ -239,7 +239,7 @@ public class MainActivity extends Activity {
 
     private void addWallpaperSection() {
         root.addView(text("WALLPAPER", 11, muted, true));
-        root.addView(text("Monochrome waves · matched to your glass widgets", 13, white, false));
+        root.addView(text("White mountain lines · matched to your glass widgets", 13, white, false));
         LinearLayout p = panel();
         ImageView image = new ImageView(this);
         wallpaperPreview = makeWallpaper();
@@ -268,30 +268,59 @@ public class MainActivity extends Activity {
         Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         Paint bg = new Paint(Paint.ANTI_ALIAS_FLAG);
-        bg.setShader(new LinearGradient(0, 0, w, h, new int[]{0xFF050505, 0xFF181818, 0xFF030303}, null, Shader.TileMode.CLAMP));
+        bg.setShader(new LinearGradient(0, 0, w * 0.8f, h, new int[]{0xFF050505, 0xFF171717, 0xFF080808}, null, Shader.TileMode.CLAMP));
         canvas.drawRect(0, 0, w, h, bg);
-        for (int i = 0; i < 18; i++) {
-            Paint line = new Paint(Paint.ANTI_ALIAS_FLAG);
-            line.setStyle(Paint.Style.STROKE);
-            line.setStrokeWidth(i % 4 == 0 ? 2.2f : 1.0f);
-            line.setColor(Color.argb(i % 4 == 0 ? 125 : 55, 238, 238, 238));
-            Path path = new Path();
-            float offset = i * 22f;
-            path.moveTo(-60, h * 0.30f + offset);
-            path.cubicTo(w * 0.22f, h * 0.22f + offset, w * 0.38f, h * 0.49f - offset * 0.15f, w * 0.63f, h * 0.37f + offset * 0.25f);
-            path.cubicTo(w * 0.82f, h * 0.28f + offset * 0.1f, w * 0.86f, h * 0.55f + offset * 0.3f, w + 60, h * 0.47f + offset * 0.12f);
-            canvas.drawPath(path, line);
+        Paint glow = new Paint(Paint.ANTI_ALIAS_FLAG);
+        glow.setShader(new LinearGradient(0, h * 0.40f, 0, h * 0.83f, new int[]{0x00303030, 0x55444444, 0x00000000}, null, Shader.TileMode.CLAMP));
+        canvas.drawRect(0, h * 0.35f, w, h * 0.9f, glow);
+        Path ridge = new Path();
+        ridge.moveTo(-40, h * 0.56f);
+        ridge.lineTo(w * 0.14f, h * 0.42f);
+        ridge.lineTo(w * 0.27f, h * 0.49f);
+        ridge.lineTo(w * 0.43f, h * 0.31f);
+        ridge.lineTo(w * 0.58f, h * 0.47f);
+        ridge.lineTo(w * 0.72f, h * 0.36f);
+        ridge.lineTo(w * 0.88f, h * 0.48f);
+        ridge.lineTo(w * 1.08f, h * 0.38f);
+        ridge.lineTo(w * 1.08f, h * 0.78f);
+        ridge.lineTo(-40, h * 0.78f);
+        ridge.close();
+        Paint mountain = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mountain.setShader(new LinearGradient(0, h * 0.33f, 0, h * 0.79f, new int[]{0xFF383838, 0xFF111111, 0xFF050505}, null, Shader.TileMode.CLAMP));
+        canvas.drawPath(ridge, mountain);
+        Paint outline = new Paint(Paint.ANTI_ALIAS_FLAG);
+        outline.setStyle(Paint.Style.STROKE);
+        outline.setStrokeJoin(Paint.Join.ROUND);
+        outline.setStrokeCap(Paint.Cap.ROUND);
+        outline.setStrokeWidth(2.6f);
+        outline.setColor(0xD9FFFFFF);
+        Path crest = new Path();
+        crest.moveTo(-40, h * 0.56f);
+        crest.lineTo(w * 0.14f, h * 0.42f);
+        crest.lineTo(w * 0.27f, h * 0.49f);
+        crest.lineTo(w * 0.43f, h * 0.31f);
+        crest.lineTo(w * 0.58f, h * 0.47f);
+        crest.lineTo(w * 0.72f, h * 0.36f);
+        crest.lineTo(w * 0.88f, h * 0.48f);
+        crest.lineTo(w * 1.08f, h * 0.38f);
+        canvas.drawPath(crest, outline);
+        outline.setStrokeWidth(1.0f);
+        outline.setColor(0x66FFFFFF);
+        for (int i = 0; i < 5; i++) {
+            Path contour = new Path();
+            float y = h * (0.61f + i * 0.035f);
+            contour.moveTo(-20, y);
+            contour.cubicTo(w * 0.25f, y - h * 0.035f, w * 0.57f, y + h * 0.025f, w + 20, y - h * 0.02f);
+            canvas.drawPath(contour, outline);
         }
         Paint orb = new Paint(Paint.ANTI_ALIAS_FLAG);
-        orb.setShader(new LinearGradient(w * 0.2f, h * 0.65f, w * 0.85f, h * 0.92f, 0xFF444444, 0xFF050505, Shader.TileMode.CLAMP));
-        canvas.drawCircle(w * 0.52f, h * 0.80f, w * 0.31f, orb);
-        Paint edge = new Paint(Paint.ANTI_ALIAS_FLAG);
-        edge.setStyle(Paint.Style.STROKE);
-        edge.setStrokeWidth(2f);
-        edge.setColor(0x99FFFFFF);
-        canvas.drawCircle(w * 0.52f, h * 0.80f, w * 0.31f, edge);
+        orb.setStyle(Paint.Style.STROKE);
+        orb.setStrokeWidth(1.3f);
+        orb.setColor(0x66FFFFFF);
+        canvas.drawCircle(w * 0.78f, h * 0.81f, w * 0.20f, orb);
         return bitmap;
     }
+
 
     private void applyDesign(String key, int style, Class<?> provider, String title, String design) {
         prefs.edit().putInt("style_" + key, style).apply();
