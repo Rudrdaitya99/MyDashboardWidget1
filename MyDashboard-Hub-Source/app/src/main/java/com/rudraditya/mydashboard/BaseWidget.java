@@ -53,7 +53,9 @@ abstract class BaseWidget extends AppWidgetProvider {
             }
             int accent = Color.WHITE;
             int transparency = p.getInt("transparency", 20);
-            int background = transparency >= 70 ? R.drawable.glass_card_80
+            boolean whiteRidge = p.getInt("style_" + k, 0) == 1;
+            int background = whiteRidge ? R.drawable.glass_mountain_card
+                    : transparency >= 70 ? R.drawable.glass_card_80
                     : transparency >= 50 ? R.drawable.glass_card_60
                     : transparency >= 30 ? R.drawable.glass_card_40
                     : transparency >= 10 ? R.drawable.glass_card_20
