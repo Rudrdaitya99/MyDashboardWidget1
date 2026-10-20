@@ -241,6 +241,7 @@ public class MainActivity extends Activity {
         LinearLayout.LayoutParams ap = new LinearLayout.LayoutParams(-1, dp(46));
         ap.topMargin = dp(10);
         p.addView(apply, ap);
+        root.addView(p);
         apply.setOnClickListener(v -> {
             try {
                 WallpaperManager.getInstance(this).setBitmap(wallpaperPreview);
