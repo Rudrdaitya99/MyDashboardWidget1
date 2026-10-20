@@ -285,7 +285,7 @@ public class MainActivity extends Activity {
                 if (photo != null) mountain.setImageBitmap(photo);
             }
             View card = actual.findViewById(R.id.widgetRoot);
-            if (card != null) card.setBackgroundResource(R.drawable.glass_mountain_overlay);
+            if (card != null) card.setBackgroundResource(ThemeAssets.widgetOverlay(this));
         }
         float textScale = size == 0 ? 0.78f : size == 1 ? 1.0f : 1.24f;
         scalePreviewText(actual, R.id.timeText, textScale);
