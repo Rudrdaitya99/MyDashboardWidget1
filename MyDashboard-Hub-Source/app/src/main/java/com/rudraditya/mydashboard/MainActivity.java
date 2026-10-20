@@ -168,7 +168,7 @@ public class MainActivity extends Activity {
         section.addView(text(title, 18, white, true));
         LinearLayout.LayoutParams subp = new LinearLayout.LayoutParams(-1, -2);
         subp.topMargin = dp(3);
-        section.addView(text("TWO DISTINCT STYLES · PREVIEW BEFORE APPLY", 9, muted, true), subp);
+        section.addView(text("THREE DISTINCT DESIGNS · PREVIEW BEFORE APPLY", 9, muted, true), subp);
 
         for (int style = 0; style < names.length; style++) {
             final int chosenStyle = style;
@@ -184,7 +184,7 @@ public class MainActivity extends Activity {
             titleRow.setGravity(Gravity.CENTER_VERTICAL);
             titleRow.addView(text(names[style], 14, white, true),
                     new LinearLayout.LayoutParams(0, -2, 1));
-            TextView chip = text(style == 0 ? "BLACK" : "PHOTO", 9, muted, true);
+            TextView chip = text(style == 0 ? "GLASS" : style == 1 ? "PHOTO" : "ALT", 9, muted, true);
             chip.setGravity(Gravity.CENTER);
             chip.setBackground(shape(0xFF292929, 0x99FFFFFF, 20));
             titleRow.addView(chip, new LinearLayout.LayoutParams(dp(58), dp(25)));
@@ -466,19 +466,21 @@ public class MainActivity extends Activity {
     private int dp(int v) { return Math.round(v * getResources().getDisplayMetrics().density); }
 
     private void openAppOrWeb(String packageName, String url) {
-        Intent i = getPackageManager().getLaunchIntentForPackage(packageName);
-        if (i == null) {
-            i = new Intent(Intent.ACTION_MAIN);
-            i.addCategory(Intent.CATEGORY_LAUNCHER);
-            i.setPackage(packageName);
-            if (i.resolveActivity(getPackageManager()) == null) {
-                i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            }
+        String[] candidates = packageName.equals("com.google.android.apps.bard")
+                ? new String[]{"com.google.android.apps.bard", "com.google.android.apps.gemini"}
+                : new String[]{packageName};
+        Intent launch = null;
+        for (String candidate : candidates) {
+            launch = getPackageManager().getLaunchIntentForPackage(candidate);
+            if (launch != null) break;
         }
-        try { startActivity(i); } catch (Exception e) {
+        if (launch == null) launch = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        try {
+            startActivity(launch);
+        } catch (Exception e) {
             try { startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url))); }
             catch (Exception ignored) {
-                Toast.makeText(this, "App and browser are unavailable", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "The app and browser are unavailable", Toast.LENGTH_SHORT).show();
             }
         }
     }
