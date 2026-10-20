@@ -250,9 +250,6 @@ public class MainActivity extends Activity {
         LinearLayout p = column();
         p.setPadding(dp(13), dp(12), dp(13), dp(12));
         p.setBackground(shape(Color.rgb(13,13,13), Color.rgb(49,49,49), 16));
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1, -2);
-        lp.topMargin = dp(8);
-        root.addView(p, lp);
         return p;
     }
     private LinearLayout row() { LinearLayout l = new LinearLayout(this); l.setOrientation(LinearLayout.HORIZONTAL); return l; }
