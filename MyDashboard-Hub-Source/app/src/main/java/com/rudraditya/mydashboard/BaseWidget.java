@@ -51,10 +51,14 @@ abstract class BaseWidget extends AppWidgetProvider {
                 setAppLink(v, c, id, R.id.chatgptText, "com.openai.chatgpt", "https://chatgpt.com");
                 setAppLink(v, c, id, R.id.geminiText, "com.google.android.apps.bard", "https://gemini.google.com");
             }
-            int accent = p.getInt("accent", Color.rgb(189, 178, 255));
-            int opacity = p.getInt("opacity", 85);
-            int alpha = Math.max(0, Math.min(255, Math.round(opacity * 2.55f)));
-            try { v.setFloat(R.id.widgetRoot, "setAlpha", opacity / 100f); } catch (Exception ignored) {}
+            int accent = p.getInt("accent", Color.WHITE);
+            int transparency = p.getInt("transparency", 20);
+            int background = transparency >= 70 ? R.drawable.glass_card_80
+                    : transparency >= 50 ? R.drawable.glass_card_60
+                    : transparency >= 30 ? R.drawable.glass_card_40
+                    : transparency >= 10 ? R.drawable.glass_card_20
+                    : R.drawable.glass_card_0;
+            try { v.setInt(R.id.widgetRoot, "setBackgroundResource", background); } catch (Exception ignored) {}
             if (k.equals("dashboard") || k.equals("clock")) {
                 try { v.setTextColor(R.id.timeText, accent); } catch (Exception ignored) {}
             }
