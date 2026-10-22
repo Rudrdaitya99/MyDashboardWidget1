@@ -25,6 +25,7 @@ abstract class BaseWidget extends AppWidgetProvider {
 
     @Override public void onUpdate(Context c, AppWidgetManager m, int[] ids) {
         SharedPreferences p = c.getSharedPreferences(MainActivity.PREFS, Context.MODE_PRIVATE);
+        WeatherService.refreshIfNeeded(c, false);
         String k = kind();
         int selectedStyle = p.getInt("style_" + k, 0);
         for (int id : ids) {
@@ -60,7 +61,7 @@ abstract class BaseWidget extends AppWidgetProvider {
             if (k.equals("dashboard")) {
                 v.setTextViewText(R.id.ageText, age(birth));
                 v.setTextViewText(R.id.countdownText, countdown(target));
-                v.setTextViewText(R.id.weatherText, "Weather · coming in a later update");
+                v.setTextViewText(R.id.weatherText, p.getString("weather_summary", "Weather · set city in app"));
             } else if (k.equals("age")) {
                 v.setTextViewText(R.id.ageText, age(birth));
                 if (selectedStyle == 2) {
