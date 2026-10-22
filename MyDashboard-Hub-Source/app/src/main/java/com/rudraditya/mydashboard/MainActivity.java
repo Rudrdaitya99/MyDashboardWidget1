@@ -148,6 +148,54 @@ public class MainActivity extends Activity {
         root.addView(personal);
 
         space(root, 10);
+        root.addView(text("WEATHER", 11, muted, true));
+        LinearLayout weatherPanel = panel();
+        weatherPanel.addView(text("Current conditions", 14, white, true));
+        weatherPanel.addView(text("Free weather data · no location permission needed", 11, muted, false));
+        EditText weatherCity = edit("City or town · e.g. Beawar, Rajasthan",
+                prefs.getString("weather_city", ""));
+        weatherPanel.addView(weatherCity);
+        TextView weatherStatus = text(
+                prefs.getString("weather_summary", "Enter a city to load current weather"),
+                12, white, true);
+        LinearLayout.LayoutParams weatherStatusParams = new LinearLayout.LayoutParams(-1, -2);
+        weatherStatusParams.topMargin = dp(8);
+        weatherPanel.addView(weatherStatus, weatherStatusParams);
+        TextView saveWeather = action("SAVE CITY & UPDATE WEATHER");
+        LinearLayout.LayoutParams saveWeatherParams = new LinearLayout.LayoutParams(-1, dp(44));
+        saveWeatherParams.topMargin = dp(8);
+        weatherPanel.addView(saveWeather, saveWeatherParams);
+        saveWeather.setOnClickListener(v -> {
+            String city = weatherCity.getText().toString().trim();
+            if (city.isEmpty()) {
+                Toast.makeText(this, "Enter a city or town first", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            prefs.edit().putString("weather_city", city)
+                    .putString("weather_summary", "Weather · updating…")
+                    .putString("weather_detail", "Fetching current conditions…").apply();
+            weatherStatus.setText("Weather · updating…");
+            WeatherService.refreshIfNeeded(this, true);
+            DashboardRefresh.refresh(this);
+            Toast.makeText(this, "Weather update started. The dashboard will refresh automatically.", Toast.LENGTH_LONG).show();
+        });
+        TextView refreshWeather = action("REFRESH WEATHER NOW");
+        LinearLayout.LayoutParams refreshWeatherParams = new LinearLayout.LayoutParams(-1, dp(42));
+        refreshWeatherParams.topMargin = dp(6);
+        weatherPanel.addView(refreshWeather, refreshWeatherParams);
+        refreshWeather.setOnClickListener(v -> {
+            if (prefs.getString("weather_city", "").trim().isEmpty()) {
+                Toast.makeText(this, "Save a city first", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            prefs.edit().putString("weather_summary", "Weather · updating…").apply();
+            weatherStatus.setText("Weather · updating…");
+            WeatherService.refreshIfNeeded(this, true);
+            DashboardRefresh.refresh(this);
+        });
+        root.addView(weatherPanel);
+
+        space(root, 10);
         root.addView(text("QUICK LAUNCH", 11, muted, true));
         LinearLayout apps = row();
         TextView chat = action("✳  ChatGPT");
@@ -293,7 +341,7 @@ public class MainActivity extends Activity {
         setPreviewText(actual, R.id.countdownText, "Countdown · 42 days left");
         setPreviewText(actual, R.id.countdownNumberText, "42");
         setPreviewText(actual, R.id.countdownLabelText, "DAYS LEFT");
-        setPreviewText(actual, R.id.weatherText, "Weather · 24°");
+        setPreviewText(actual, R.id.weatherText, prefs.getString("weather_summary", "Weather · set city in app"));
         setPreviewText(actual, R.id.chatgptText, "✳ ChatGPT");
         setPreviewText(actual, R.id.geminiText, "✦ Gemini");
 
