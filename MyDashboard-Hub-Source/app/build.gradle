@@ -1,12 +1,37 @@
 plugins { id 'com.android.application' }
+
 android {
     namespace 'com.rudraditya.mydashboard'
     compileSdk 35
+
     defaultConfig {
         applicationId 'com.rudraditya.mydashboard'
         minSdk 26
         targetSdk 35
-        versionCode 9
-        versionName '3.4-weather'
+        versionCode 10
+        versionName '3.5-stable-signing'
+    }
+
+    // GitHub Actions supplies a persistent keystore through repository secrets.
+    // This keeps package signatures identical between APK builds, allowing in-place updates.
+    signingConfigs {
+        stable {
+            def keyStorePath = System.getenv('ANDROID_KEYSTORE_PATH')
+            if (keyStorePath != null && !keyStorePath.isEmpty()) {
+                storeFile file(keyStorePath)
+                storePassword System.getenv('ANDROID_KEYSTORE_PASSWORD')
+                keyAlias System.getenv('ANDROID_KEY_ALIAS')
+                keyPassword System.getenv('ANDROID_KEY_PASSWORD')
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            def keyStorePath = System.getenv('ANDROID_KEYSTORE_PATH')
+            if (keyStorePath != null && !keyStorePath.isEmpty()) {
+                signingConfig signingConfigs.stable
+            }
+        }
     }
 }
